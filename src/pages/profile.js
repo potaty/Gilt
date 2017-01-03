@@ -1,46 +1,7 @@
 import React, { Component } from 'react'
-import {
-  AppRegistry,
-  StyleSheet,
-  TextInput,
-  Button,
-  Alert,
-  Text,
-  Image,
-  View,
-  ToolbarAndroid,
-} from 'react-native'
-
-console.log(ToolbarAndroid)
-
-const loginHandler = () => {
-  var myHeaders = new Headers()
-
-  var myInit = { method: 'GET',
-                 headers: myHeaders,
-                 mode: 'cors',
-                 cache: 'default' }
-
-  fetch('https://api.github.com/authorizations',myInit)
-  .then(function(response) {
-    console.warn(response)
-  })
-  .then(function(myBlob) {
-    var objectURL = URL.createObjectURL(myBlob)
-    myImage.src = objectURL
-  })
-  return 'fetch'
-}
-
+import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
 
 export default class Profile extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: 'username',
-      password: 'password'
-    }
-  }
   onActionSelected(position) {
     if (position === 0) { // index of 'Settings'
       showSettings()
@@ -59,7 +20,7 @@ export default class Profile extends Component {
           <View style={styles.profile}>
             <Image
               style={styles.head}
-              source={require('../../pic/head.png')}
+              source={require('../images/head.png')}
             />
             <View style={styles.contact}>
               <Text style={styles.username}>{'Hanzhao Lin'}</Text>
@@ -67,7 +28,7 @@ export default class Profile extends Component {
               <View style={styles.mail}>
                 <Image
                   style={styles.mailbox}
-                  source={require('../../pic/mail.png')}
+                  source={require('../images/mail.png')}
                 />
                 <Text style={styles.mailtext}>
                   {'readme@gmail.com'}
@@ -76,7 +37,7 @@ export default class Profile extends Component {
               <View style={styles.link}>
                 <Image
                   style={styles.linklogo}
-                  source={require('../../pic/link.png')}
+                  source={require('../images/link.png')}
                 />
                 <Text style={styles.linkto}>
                   {'magicae.github.io'}
