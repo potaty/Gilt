@@ -9,17 +9,17 @@ import Welcome from './src/pages/welcome'
 class GithubClient extends React.Component {
   renderScene(route, navigator) {
     switch (route.name) {
-      case 'DASHBOARD':
-        return <Profile navigator={navigator} />
       case 'WELCOME':
         return <Welcome navigator={navigator} />
       case 'LOGIN':
         return <Auth navigator={navigator} />
+      case 'DASHBOARD':
+        return <Profile navigator={navigator} />
     }
   }
   render() {
     return (
-      <Navigator initialRoute={routes[1]} initialRouteStack={routes}
+      <Navigator initialRoute={routes[0]}
         renderScene={this.renderScene} />
     )
   }

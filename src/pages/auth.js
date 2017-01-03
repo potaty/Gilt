@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ToolbarAndroid, View, WebView } from 'react-native'
+import { StyleSheet, Text, ToolbarAndroid, View, WebView } from 'react-native'
 
 import routes from '../routes'
 import { CLIENT_ID, CLIENT_SECRET } from '../config'
@@ -29,9 +29,7 @@ export default class Auth extends React.Component {
       })
       const body = await response.json()
       global.TOKEN = body.access_token
-      console.log(global.TOKEN)
-      this.props.navigator.pop()
-      this.props.navigator.pop()
+      this.props.navigator.replace(routes[2])
     }
   }
   render() {

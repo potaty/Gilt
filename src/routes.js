@@ -1,7 +1,7 @@
 const routes = [
-  { name: 'DASHBOARD', index: 0 },
-  { name: 'WELCOME', index: 1 },
-  { name: 'LOGIN', index: 2 },
+  { name: 'WELCOME', index: 0 },
+  { name: 'LOGIN', index: 1 },
+  { name: 'DASHBOARD', index: 2 },
 ]
 
 export default routes

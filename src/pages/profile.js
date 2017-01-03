@@ -1,69 +1,9 @@
 import React, { Component } from 'react'
 import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
 
-export default class Profile extends Component {
-  onActionSelected(position) {
-    if (position === 0) { // index of 'Settings'
-      showSettings()
-    }
-  }
-  render() {
-    return (
-      <View>
-        <ToolbarAndroid style={styles.toolbar}
-          title="Profile"
-          actions={[{title: '', show: 'always'}]}
-          onActionSelected={this.onActionSelected}
-          titleColor="#ffffff"
-        />
-        <View style={styles.container}>
-          <View style={styles.profile}>
-            <Image
-              style={styles.head}
-              source={require('../images/head.png')}
-            />
-            <View style={styles.contact}>
-              <Text style={styles.username}>{'Hanzhao Lin'}</Text>
-              <Text style={styles.nickname}>{'magicae'}</Text>
-              <View style={styles.mail}>
-                <Image
-                  style={styles.mailbox}
-                  source={require('../images/mail.png')}
-                />
-                <Text style={styles.mailtext}>
-                  {'readme@gmail.com'}
-                </Text>
-              </View>
-              <View style={styles.link}>
-                <Image
-                  style={styles.linklogo}
-                  source={require('../images/link.png')}
-                />
-                <Text style={styles.linkto}>
-                  {'magicae.github.io'}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.detail}>
-            <View style={styles.stars}>
-              <Text style={styles.number}>12</Text>
-              <Text>Repositories</Text>
-            </View>
-            <View style={styles.stars}>
-              <Text style={styles.number}>12</Text>
-              <Text>Stars</Text>
-            </View>
-            <View style={styles.stars}>
-              <Text style={styles.number}>12</Text>
-              <Text>Followers</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    )
-  }
-}
+import AvatarImage from '../images/head.png'
+import MailIcon from '../images/mail.png'
+import LinkIcon from '../images/link.png'
 
 const styles = StyleSheet.create({
   container: {
@@ -101,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  mailtext: {
+  mailText: {
     color: '#4078c0',
     marginLeft: 5,
     fontSize: 14,
@@ -110,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  linkto: {
+  linkText: {
     color: '#4078c0',
     marginLeft: 5,
     fontSize: 14,
@@ -120,7 +60,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 10,
   },
-  stars: {
+  datas: {
     flexDirection: 'column',
     alignItems: 'center',
     marginVertical: 20,
@@ -131,3 +71,68 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 })
+
+export default class Profile extends Component {
+  state = {
+    loaded: false,
+    user: {},
+  }
+  componentDidMount = async () => {
+    const response = await fetch('https://api.github.com/user', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `token ${global.TOKEN}`,
+      },
+    })
+    const body = await response.json()
+    this.setState({
+      loaded: true,
+      user: body,
+    })
+  }
+  render() {
+    if (!this.state.loaded) {
+      return <View />
+    }
+    return (
+      <View>
+        <ToolbarAndroid style={styles.toolbar} title="Profile" titleColor="#ffffff" />
+        <View style={styles.container}>
+          <View style={styles.profile}>
+            <Image style={styles.head} source={AvatarImage} />
+            <View style={styles.contact}>
+              <Text style={styles.username}>{ this.state.user.name }</Text>
+              <Text style={styles.nickname}>{ this.state.user.login }</Text>
+              <View style={styles.mail}>
+                <Image source={MailIcon} />
+                <Text style={styles.mailText}>{ this.state.user.email }</Text>
+              </View>
+              <View style={styles.link}>
+                <Image source={LinkIcon} />
+                <Text style={styles.linkText}>{ this.state.user.blog }</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.detail}>
+            <View style={styles.datas}>
+              <Text style={styles.number}>
+                { this.state.user.public_repos + this.state.user.owned_private_repos }
+              </Text>
+              <Text>Repositories</Text>
+            </View>
+            <View style={styles.datas}>
+              <Text style={styles.number}>{ this.state.user.following }</Text>
+              <Text>Following</Text>
+            </View>
+            <View style={styles.datas}>
+              <Text style={styles.number}>{ this.state.user.followers }</Text>
+              <Text>Followers</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    )
+  }
+}
