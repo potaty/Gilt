@@ -62,11 +62,29 @@ const styles = StyleSheet.create({
   datas: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 10,
     flex: 1,
   },
   number: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  title: {
+    marginLeft: 20,
+    marginVertical: 10,
+    color: '#313131',
+    fontWeight: 'bold',
+  },
+  repo: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    marginVertical: 5,
+    alignItems: 'center',
+  },
+  repoLogo: {
+    marginRight: 10,
+  },
+  repoTitle: {
     fontWeight: 'bold',
   },
 })
@@ -128,6 +146,30 @@ export default class Profile extends Component {
             <View style={styles.datas}>
               <Text style={styles.number}>{ this.state.user.followers }</Text>
               <Text>Followers</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={styles.title}>Pinned repositories</Text>
+            <View style={styles.repo}>
+              <Image
+                style={styles.repoLogo}
+                source={require('../../pic/repo.png')}
+              />
+              <Text style={styles.repoTitle}>poooi/poi</Text>
+            </View>
+            <View style={styles.repo}>
+              <Image
+                style={styles.repoLogo}
+                source={require('../../pic/repo.png')}
+              />
+              <Text style={styles.repoTitle}>electron/electron</Text>
+            </View>
+            <View style={styles.repo}>
+              <Image
+                style={styles.repoLogo}
+                source={require('../../pic/repo.png')}
+              />
+              <Text style={styles.repoTitle}>react-toolbox/react-toolbox</Text>
             </View>
           </View>
         </View>
