@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
 
-import AvatarImage from '../images/head.png'
 import MailIcon from '../images/mail.png'
 import LinkIcon from '../images/link.png'
 
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   nickname: {
-    fontSize: 15,
+    fontSize: 16,
   },
   mail: {
     flexDirection: 'row',
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
   mailText: {
     color: '#4078c0',
     marginLeft: 5,
-    fontSize: 14,
+    fontSize: 12,
   },
   link: {
     flexDirection: 'row',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
   linkText: {
     color: '#4078c0',
     marginLeft: 5,
-    fontSize: 14,
+    fontSize: 12,
   },
   detail: {
     flexDirection: 'row',
@@ -101,7 +100,7 @@ export default class Profile extends Component {
         <ToolbarAndroid style={styles.toolbar} title="Profile" titleColor="#ffffff" />
         <View style={styles.container}>
           <View style={styles.profile}>
-            <Image style={styles.head} source={AvatarImage} />
+            <Image style={styles.head} source={{ uri: this.state.user.avatar_url }} />
             <View style={styles.contact}>
               <Text style={styles.username}>{ this.state.user.name }</Text>
               <Text style={styles.nickname}>{ this.state.user.login }</Text>
