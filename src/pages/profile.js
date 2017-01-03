@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   AppRegistry,
   StyleSheet,
@@ -9,38 +9,38 @@ import {
   Image,
   View,
   ToolbarAndroid,
-} from 'react-native';
+} from 'react-native'
 
 console.log(ToolbarAndroid)
 
 const loginHandler = () => {
-  var myHeaders = new Headers();
+  var myHeaders = new Headers()
 
   var myInit = { method: 'GET',
                  headers: myHeaders,
                  mode: 'cors',
-                 cache: 'default' };
+                 cache: 'default' }
 
   fetch('https://api.github.com/authorizations',myInit)
   .then(function(response) {
     console.warn(response)
   })
   .then(function(myBlob) {
-    var objectURL = URL.createObjectURL(myBlob);
-    myImage.src = objectURL;
-  });
+    var objectURL = URL.createObjectURL(myBlob)
+    myImage.src = objectURL
+  })
   return 'fetch'
-};
+}
 
 
 export default class Profile extends Component {
   constructor(props) {
-    super(props);
-    this.state = { username: 'username', password: 'password'};
+    super(props)
+    this.state = { username: 'username', password: 'password'}
   }
   onActionSelected(position) {
     if (position === 0) { // index of 'Settings'
-      showSettings();
+      showSettings()
     }
   }
   render() {
@@ -48,7 +48,7 @@ export default class Profile extends Component {
       <View>
         <ToolbarAndroid style={styles.toolbar}
           title="Profile"
-          actions={[{title: 'Settings', icon: require('../../pic/head.png'), show: 'always'}]}
+          actions={[{title: 'Settings', show: 'always'}]}
           onActionSelected={this.onActionSelected} />
         <View style={styles.container}>
           <Image
@@ -60,7 +60,7 @@ export default class Profile extends Component {
           <Button title="Regist"/>
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#e9eaed',
     height: 56,
   }
-});
+})
