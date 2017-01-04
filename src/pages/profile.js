@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
-
+import _ from 'lodash'
 import MailIcon from '../images/mail.png'
 import LinkIcon from '../images/link.png'
+import RepoIcon from '../images/repo.png'
 
 const styles = StyleSheet.create({
   container: {
@@ -93,6 +94,7 @@ export default class Profile extends Component {
   state = {
     loaded: false,
     user: {},
+    repos: [],
   }
   componentDidMount = async () => {
     const response = await fetch('https://api.github.com/user', {
@@ -100,13 +102,25 @@ export default class Profile extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `token ${global.TOKEN}`,
+        'Authorization': `token ${global.ACCESS_TOKEN}`,
       },
     })
-    const body = await response.json()
+    const user = await response.json()
     this.setState({
       loaded: true,
-      user: body,
+      user: user,
+    })
+    const repoResponse = await fetch(`https://api.github.com/users/${user.login}/repos`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `token ${global.ACCESS_TOKEN}`,
+      },
+    })
+    const repos = await repoResponse.json()
+    this.setState({
+      repos: _.sortBy(repos, ['stargazers_count']).slice(0, 5),
     })
   }
   render() {
@@ -122,14 +136,18 @@ export default class Profile extends Component {
             <View style={styles.contact}>
               <Text style={styles.username}>{ this.state.user.name }</Text>
               <Text style={styles.nickname}>{ this.state.user.login }</Text>
-              <View style={styles.mail}>
-                <Image source={MailIcon} />
-                <Text style={styles.mailText}>{ this.state.user.email }</Text>
-              </View>
-              <View style={styles.link}>
-                <Image source={LinkIcon} />
-                <Text style={styles.linkText}>{ this.state.user.blog }</Text>
-              </View>
+              { !!this.state.user.email &&
+                <View style={styles.mail}>
+                  <Image source={MailIcon} />
+                  <Text style={styles.mailText}>{ this.state.user.email }</Text>
+                </View>
+              }
+              { !!this.state.user.blog &&
+                <View style={styles.link}>
+                  <Image source={LinkIcon} />
+                  <Text style={styles.linkText}>{ this.state.user.blog }</Text>
+                </View>
+              }
             </View>
           </View>
           <View style={styles.detail}>
@@ -149,28 +167,14 @@ export default class Profile extends Component {
             </View>
           </View>
           <View>
-            <Text style={styles.title}>Pinned repositories</Text>
-            <View style={styles.repo}>
-              <Image
-                style={styles.repoLogo}
-                source={require('../../pic/repo.png')}
-              />
-              <Text style={styles.repoTitle}>poooi/poi</Text>
-            </View>
-            <View style={styles.repo}>
-              <Image
-                style={styles.repoLogo}
-                source={require('../../pic/repo.png')}
-              />
-              <Text style={styles.repoTitle}>electron/electron</Text>
-            </View>
-            <View style={styles.repo}>
-              <Image
-                style={styles.repoLogo}
-                source={require('../../pic/repo.png')}
-              />
-              <Text style={styles.repoTitle}>react-toolbox/react-toolbox</Text>
-            </View>
+            <Text style={styles.title}>Most Popular Repositories</Text>
+            { this.state.repos.map(repo => (
+                <View key={repo.id} style={styles.repo}>
+                  <Image style={styles.repoLogo} source={RepoIcon} />
+                  <Text style={styles.repoTitle}>{repo.full_name}</Text>
+                </View>
+              ))
+            }
           </View>
         </View>
       </View>

@@ -28,7 +28,9 @@ export default class Auth extends React.Component {
         }),
       })
       const body = await response.json()
-      global.TOKEN = body.access_token
+      if (!global.ACCESS_TOKEN) {
+        global.ACCESS_TOKEN = body.access_token
+      }
       this.props.navigator.replace(routes[2])
     }
   }
