@@ -10,11 +10,6 @@ import {
 import Profile from './src/pages/profile.js'
 
 export default class GithubClient extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { username: 'username', password: 'password'}
-  }
-
   render() {
     return (
       <Profile/>
