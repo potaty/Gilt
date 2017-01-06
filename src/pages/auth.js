@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, ToolbarAndroid, View, WebView } from 'react-native'
 
-import routes from '../routes'
 import { CLIENT_ID, CLIENT_SECRET } from '../config'
+import routes from '../routes'
 
 const authURI = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user%20repo%20read:org`
 
@@ -30,6 +30,7 @@ export default class Auth extends React.Component {
       const body = await response.json()
       if (!global.ACCESS_TOKEN) {
         global.ACCESS_TOKEN = body.access_token
+        console.log(body.access_token)
       }
       this.props.navigator.replace(routes[2])
     }

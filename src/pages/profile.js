@@ -1,6 +1,10 @@
 import React from 'react'
-import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
+import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, TouchableHighlight, View } from 'react-native'
 import _ from 'lodash'
+
+import http from '../http'
+import routes from '../routes'
+
 import MailIcon from '../images/mail.png'
 import LinkIcon from '../images/link.png'
 import RepoIcon from '../images/repo.png'
@@ -86,6 +90,11 @@ const styles = StyleSheet.create({
   },
   repoTitle: {
     fontWeight: 'bold',
+    fontSize: 14,
+  },
+  repoStar: {
+    flex: 1,
+    textAlign: 'right',
   },
 })
 
@@ -96,31 +105,19 @@ export default class Profile extends React.Component {
     repos: [],
   }
   componentDidMount = async () => {
-    const response = await fetch('https://api.github.com/user', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `token ${global.ACCESS_TOKEN}`,
-      },
-    })
-    const user = await response.json()
+    const user = await (await http.get('/user')).json()
     this.setState({
       loaded: true,
       user: user,
     })
-    const repoResponse = await fetch(`https://api.github.com/users/${user.login}/repos`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `token ${global.ACCESS_TOKEN}`,
-      },
-    })
-    const repos = await repoResponse.json()
+    const repos = await (await http.get(`/users/${user.login}/repos`)).json()
+    const sorted = _.sortBy(repos, ['stargazers_count']).reverse()
     this.setState({
-      repos: _.sortBy(repos, ['stargazers_count']).slice(0, 5),
+      repos: sorted.slice(0, Math.min(sorted.length, 6)),
     })
+  }
+  handleShowRepo = (name) => {
+    this.props.navigator.push(Object.assign(routes[3], { title: name }))
   }
   render() {
     if (!this.state.loaded) {
@@ -168,10 +165,13 @@ export default class Profile extends React.Component {
           <View>
             <Text style={styles.title}>Most Popular Repositories</Text>
             { this.state.repos.map(repo => (
-                <View key={repo.id} style={styles.repo}>
-                  <Image style={styles.repoLogo} source={RepoIcon} />
-                  <Text style={styles.repoTitle}>{repo.full_name}</Text>
-                </View>
+                <TouchableHighlight key={repo.id} onPress={this.handleShowRepo.bind(this, repo.full_name)}>
+                  <View style={styles.repo}>
+                    <Image style={styles.repoLogo} source={RepoIcon} />
+                    <Text style={styles.repoTitle}>{repo.full_name}</Text>
+                    <Text style={styles.repoStar}>⭐ {repo.stargazers_count}</Text>
+                  </View>
+                </TouchableHighlight>
               ))
             }
           </View>
