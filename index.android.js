@@ -5,6 +5,7 @@ import routes from './src/routes'
 import Profile from './src/pages/profile'
 import Auth from './src/pages/auth'
 import Welcome from './src/pages/welcome'
+import Repository from './src/pages/repository'
 
 class GithubClient extends React.Component {
   renderScene(route, navigator) {
@@ -15,11 +16,13 @@ class GithubClient extends React.Component {
         return <Auth navigator={navigator} />
       case 'DASHBOARD':
         return <Profile navigator={navigator} />
+      case 'REPOSITORY':
+        return <Repository navigator={navigator} />
     }
   }
   render() {
     return (
-      <Navigator initialRoute={routes[0]}
+      <Navigator initialRoute={routes[3]}
         renderScene={this.renderScene} />
     )
   }

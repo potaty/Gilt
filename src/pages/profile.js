@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View } from 'react-native'
 import _ from 'lodash'
 import MailIcon from '../images/mail.png'
@@ -7,7 +7,6 @@ import RepoIcon from '../images/repo.png'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F5FCFF',
     flexDirection: 'column',
   },
   head: {
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class Profile extends Component {
+export default class Profile extends React.Component {
   state = {
     loaded: false,
     user: {},
