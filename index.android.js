@@ -7,6 +7,7 @@ import Auth from './src/pages/auth'
 import Welcome from './src/pages/welcome'
 import Repository from './src/pages/repository'
 import Readme from './src/pages/readme'
+import Dashboard from './src/pages/dashboard'
 
 class GithubClient extends React.Component {
   initNavigator = navigator => {
@@ -32,6 +33,8 @@ class GithubClient extends React.Component {
         return <Profile route={route} navigator={navigator} />
       case 'REPOSITORY':
         return <Repository route={route} navigator={navigator} />
+      case 'DASHBOARD':
+        return <Dashboard route={route} navigator={navigator} />
       case 'README':
         return <Readme route={route} navigator={navigator} />
     }
