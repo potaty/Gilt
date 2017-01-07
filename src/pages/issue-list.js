@@ -19,7 +19,7 @@ export default class IssueList extends React.Component {
   }
   render() {
     return (<View>
-      <MessageList></MessageList>
+      <MessageList data={this.state.dataSource}></MessageList>
     </View>)
   }
 }
