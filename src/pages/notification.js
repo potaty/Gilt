@@ -4,9 +4,6 @@ import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInp
 import MessageList from '../components/message-list'
 
 const styles = StyleSheet.create({
-  optionContainer: {
-    marginTop: 5,
-  },
   toolbar: {
     backgroundColor: '#263238',
     height: 56,
