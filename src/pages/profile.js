@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   mailText: {
-    color: '#4078c0',
+    color: '#1e88e5',
     marginLeft: 5,
     fontSize: 12,
   },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   linkText: {
-    color: '#4078c0',
+    color: '#1e88e5',
     marginLeft: 5,
     fontSize: 12,
   },
@@ -63,11 +63,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 10,
   },
-  datas: {
-    flexDirection: 'column',
-    alignItems: 'center',
+  data: {
     marginVertical: 10,
     flex: 1,
+  },
+  inner: {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   number: {
     fontSize: 20,
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 20,
     marginVertical: 10,
-    color: '#313131',
+    color: '#424242',
     fontWeight: 'bold',
   },
   repo: {
@@ -95,6 +97,9 @@ const styles = StyleSheet.create({
   repoStar: {
     flex: 1,
     textAlign: 'right',
+  },
+  bio: {
+    marginHorizontal: 20,
   },
 })
 
@@ -116,12 +121,26 @@ export default class Profile extends React.Component {
     const repos = await (await http.get(`/users/${user.login}/repos`)).json()
     const sorted = _.sortBy(repos, ['stargazers_count']).reverse()
     this.setState({
-      repos: sorted.slice(0, Math.min(sorted.length, 6)),
+      repos: sorted.slice(0, 6),
     })
   }
 
   handleShowRepo = repo => {
-    this.props.navigator.push(Object.assign(routes[3], { repo }))
+    this.props.navigator.push(Object.assign({}, routes[3], { repo }))
+  }
+
+  handleShowFollowing = login => {
+    this.props.navigator.push(Object.assign({}, routes[7], {
+      title: 'Following',
+      api: `/users/${login}/following`,
+    }))
+  }
+
+  handleShowFollowers = login => {
+    this.props.navigator.push(Object.assign({}, routes[7], {
+      title: 'Followers',
+      api: `/users/${login}/followers`,
+    }))
   }
 
   render() {
@@ -149,26 +168,49 @@ export default class Profile extends React.Component {
               }
             </View>
           </View>
+          { !!this.state.user.bio &&
+            <View style={styles.bio}>
+              <Text>{ this.state.user.bio}</Text>
+            </View>
+          }
           <View style={styles.detail}>
-            <View style={styles.datas}>
-              <Text style={styles.number}>
-                { this.state.user.public_repos + (this.state.user.owned_private_repos || 0) }
-              </Text>
-              <Text>Repositories</Text>
+            <View style={styles.data}>
+              <TouchableHighlight underlayColor="#e0e0e0"
+                onPress={this.handleShowFollowing.bind(this, this.state.user.login)}>
+                <View style={styles.inner}>
+                  <Text style={styles.number}>
+                    { this.state.user.public_repos + (this.state.user.owned_private_repos || 0) }
+                  </Text>
+                  <Text>Repositories</Text>
+                </View>
+              </TouchableHighlight>
             </View>
-            <View style={styles.datas}>
-              <Text style={styles.number}>{ this.state.user.following }</Text>
-              <Text>Following</Text>
+            <View style={styles.data}>
+              <TouchableHighlight underlayColor="#e0e0e0"
+                onPress={this.handleShowFollowing.bind(this, this.state.user.login)}>
+                <View style={styles.inner}>
+                  <Text style={styles.number}>
+                    { this.state.user.following }
+                  </Text>
+                  <Text>Following</Text>
+                </View>
+              </TouchableHighlight>
             </View>
-            <View style={styles.datas}>
-              <Text style={styles.number}>{ this.state.user.followers }</Text>
-              <Text>Followers</Text>
+            <View style={styles.data}>
+              <TouchableHighlight underlayColor="#e0e0e0"
+                onPress={this.handleShowFollowers.bind(this, this.state.user.login)}>
+                <View style={styles.inner}>
+                  <Text style={styles.number}>{ this.state.user.followers }</Text>
+                  <Text>Followers</Text>
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
           <View>
             <Text style={styles.title}>Most Popular Repositories</Text>
             { this.state.repos.map(repo => (
-                <TouchableHighlight key={repo.id} onPress={this.handleShowRepo.bind(this, repo.full_name)}>
+                <TouchableHighlight key={repo.id} underlayColor="#e0e0e0"
+                  onPress={this.handleShowRepo.bind(this, repo.full_name)}>
                   <View style={styles.repo}>
                     <Image style={styles.repoLogo} source={RepoIcon} />
                     <Text style={styles.repoTitle}>

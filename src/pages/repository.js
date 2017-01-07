@@ -84,7 +84,7 @@ export default class Repository extends React.Component {
   }
 
   handleShowReadme = () => {
-    this.props.navigator.push(Object.assign(routes[4], {
+    this.props.navigator.push(Object.assign({}, routes[4], {
       repo: this.props.route.repo
     }))
   }

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 export default class Welcome extends React.Component {
   handlePress = () => {
-    this.props.navigator.push(routes[1])
+    this.props.navigator.push(Object.assign({}, routes[1]))
   }
   render() {
     return (

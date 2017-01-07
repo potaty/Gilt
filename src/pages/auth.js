@@ -32,7 +32,7 @@ export default class Auth extends React.Component {
         global.ACCESS_TOKEN = body.access_token
         console.log(body.access_token)
       }
-      this.props.navigator.replace(routes[5])
+      this.props.navigator.replace(Object.assign({}, routes[5]))
     }
   }
   render() {

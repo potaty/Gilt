@@ -9,6 +9,7 @@ import Repository from './src/pages/repository'
 import Readme from './src/pages/readme'
 import Dashboard from './src/pages/dashboard'
 import Notification from './src/pages/notification'
+import UserList from './src/pages/user-list'
 
 class GiltApplication extends React.Component {
   initNavigator = navigator => {
@@ -39,12 +40,15 @@ class GiltApplication extends React.Component {
       case 'PROFILE':
         return <Profile route={route} navigator={navigator} />
       case 'NOTIFICATION':
-        return <Notification route={route} navigator={navigator}/>
+        return <Notification route={route} navigator={navigator} />
+      case 'USER_LIST':
+        return <UserList route={route} navigator={navigator} />
     }
   }
   render() {
     return (
-      <Navigator initialRoute={routes[0]} renderScene={this.renderScene} />
+      <Navigator initialRoute={routes[0]} renderScene={this.renderScene}
+        configureScene={() => Navigator.SceneConfigs.FloatFromBottomAndroid} />
     )
   }
 }
