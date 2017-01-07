@@ -50,7 +50,7 @@ export default class MessageList extends React.Component {
             <View style={styles.detail}>
               <Text style={styles.repoName}>{rowData[1]}</Text>
             </View>
-            <Text style={styles.repoDescription}>{rowData[2]}</Text>
+            <Text>{rowData[2]}</Text>
           </View>}
           renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
         />

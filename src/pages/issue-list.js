@@ -4,6 +4,10 @@ import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInp
 import MessageList from '../components/message-list'
 
 const styles = StyleSheet.create({
+  toolbar: {
+    backgroundColor: '#263238',
+    height: 56,
+  },
 })
 
 export default class IssueList extends React.Component {
@@ -19,7 +23,8 @@ export default class IssueList extends React.Component {
   }
   render() {
     return (<View>
-      <MessageList data={this.state.dataSource}></MessageList>
+      <ToolbarAndroid style={styles.toolbar} title={"Issue List"} titleColor="#ffffff" />
+      { !!this.state.dataSource && <MessageList data={this.state.dataSource}></MessageList> }
     </View>)
   }
 }
