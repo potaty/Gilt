@@ -10,10 +10,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-  repoDescription: {
-  },
-  time: {
-  },
   list: {
     flex: 1,
     padding: 8,
