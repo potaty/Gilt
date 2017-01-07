@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, View, ListView } from 'react-native'
+import { Image, StyleSheet, Text, ToolbarAndroid, View, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
 
 import http from '../http'
@@ -59,6 +59,10 @@ const emojiMap = {
   'ForkEvent': '📚 ',
   'CreateEvent': '🍀 ',
   'PublicEvent': '🌳 ',
+  'CreateEvent': '',
+  'IssueCommentEvent': '',
+  'PushEvent': '',
+  'IssuesEvent': '',
 }
 
 export default class Dashboard extends React.Component {

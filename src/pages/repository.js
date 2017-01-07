@@ -75,11 +75,11 @@ export default class Repository extends React.Component {
         text: `⌚️    Watchers (${data.subscribers_count})`,
         onClick: this.handleShowWatchers,
       }, {
-        text: `🍴    Forks (${data.forks_count})`,
-        onClick: () => {} /* this.handleShowForks */,
+        text: `🍴    Issues`,
+        onClick: this.handleShowIssues,
       }, {
-        text: '🐣    Releases',
-        onClick: () => {} /* this.handleShowReleases */,
+        text: '🐣    Pull Requests',
+        onClick: this.handleShowPullRequests,
       }, {
         text: '🐷    Contributors',
         onClick: this.handleShowContributors,
@@ -116,6 +116,20 @@ export default class Repository extends React.Component {
     this.props.navigator.push(Object.assign({}, routes[6], {
       title: 'Contributors',
       api: `/repos/${this.props.route.repo}/contributors`,
+    }))
+  }
+
+  handleShowIssues = () => {
+    this.props.navigator.push(Object.assign({}, routes[7], {
+      repo: this.props.route.repo,
+      type: 'issue',
+    }))
+  }
+
+  handleShowPullRequests = () => {
+    this.props.navigator.push(Object.assign({}, routes[7], {
+      repo: this.props.route.repo,
+      type: 'pull',
     }))
   }
 

@@ -3,6 +3,8 @@ import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInp
 
 import MessageList from '../components/message-list'
 
+import http from '../http'
+
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
@@ -13,18 +15,37 @@ const styles = StyleSheet.create({
 export default class IssueList extends React.Component {
   state = {}
 
-  componentDidMount() {
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  componentDidMount = async () => {
+    const issues = (await (
+      await http.get(`/repos/${this.props.route.repo}/${this.props.route.type}s?state=all`)
+    ).json()).map(issue => ({
+      id: issue.id,
+      type: issue.diff_url ? (
+        issue.merged_at ? 'MergedPullRequest' : (
+          issue.closed_at ? 'ClosedPullRequest' : 'PullRequest'
+        )
+      ) : (
+        issue.closed_at ? 'ClosedIssue' : 'Issue'
+      ),
+      title: issue.title,
+      url: issue.url.substr(22),
+      created_at: issue.created_at,
+      user: issue.user.login,
+    }))
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    })
     this.setState({
-      dataSource: dataSource.cloneWithRows([['2 hours ago', '💬 Add a new issue.', 'please fix this chibug please'],
-                                            ['2 hours ago', '🙋 Can not open this part.', 'please fix this chibug please'],
-                                            ['2 hours ago', '💬 Please close the mouse', 'please fix this chibug please']]),
+      dataSource: dataSource.cloneWithRows(issues),
     })
   }
   render() {
     return (<View>
-      <ToolbarAndroid style={styles.toolbar} title={"Issue List"} titleColor="#ffffff" />
-      { !!this.state.dataSource && <MessageList data={this.state.dataSource}></MessageList> }
+      <ToolbarAndroid style={styles.toolbar} titleColor="#ffffff"
+        title={this.props.route.type === 'issue' ? 'Issues' : 'Pull Requests'} />
+      { !!this.state.dataSource &&
+        <MessageList data={this.state.dataSource} />
+      }
     </View>)
   }
 }

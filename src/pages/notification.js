@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInput, ToolbarAndroid, View, Text, ListView } from 'react-native'
+import { StyleSheet, ToolbarAndroid, View } from 'react-native'
 
 import MessageList from '../components/message-list'
 
@@ -10,31 +10,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#263238',
     height: 56,
   },
-  list: {
-    marginLeft: 12,
-    flex: 1,
-    padding: 8,
-    justifyContent: 'space-between',
-    marginRight: 20,
-  },
-  separator: {
-    flex: 1,
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#e0e0e0',
-    marginLeft: 50,
-    marginRight: 20,
-  },
-  detail: {
-    flexDirection: 'row',
-  },
-  repo: {
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  description: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  }
 })
 
 export default class Notification extends React.Component {

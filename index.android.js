@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInput, View } from 'react-native'
+import { AppRegistry, BackAndroid, Navigator } from 'react-native'
 
 import routes from './src/routes'
 import Profile from './src/pages/profile'

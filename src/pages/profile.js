@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, AppRegistry, Button, Image, StyleSheet, Text, TextInput, ToolbarAndroid, TouchableHighlight, View } from 'react-native'
+import { Image, StyleSheet, Text, ToolbarAndroid, TouchableHighlight, View } from 'react-native'
 import _ from 'lodash'
 
 import http from '../http'
