@@ -6,6 +6,8 @@ const routes = [
   { name: 'README', repo: 'potaty/Gilt', index: 4 },
   { name: 'PROFILE', index: 5 },
   { name: 'NOTIFICATION', index: 6},
+  { name: 'ISSUE', index: 7},
+  { name: 'ISSUELIST', index: 8},
 ]
 
 export default routes

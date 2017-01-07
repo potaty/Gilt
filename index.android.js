@@ -9,6 +9,9 @@ import Repository from './src/pages/repository'
 import Readme from './src/pages/readme'
 import Dashboard from './src/pages/dashboard'
 import Notification from './src/pages/notification'
+import Issue from './src/pages/issue'
+import IssueList from './src/pages/issue-list'
+import MessageList from './src/components/message-list'
 
 class GiltApplication extends React.Component {
   initNavigator = navigator => {
@@ -40,11 +43,17 @@ class GiltApplication extends React.Component {
         return <Profile route={route} navigator={navigator} />
       case 'NOTIFICATION':
         return <Notification route={route} navigator={navigator}/>
+      case 'ISSUE':
+        return <Issue route={route} navigator={navigator} />
+      case 'ISSUELIST':
+        return <IssueList route={route} navigator={navigator} />
+      case 'MESSAGELIST':
+        return <MessageList route={route} navigator={navigator} />
     }
   }
   render() {
     return (
-      <Navigator initialRoute={routes[0]} renderScene={this.renderScene} />
+      <Navigator initialRoute={routes[6]} renderScene={this.renderScene} />
     )
   }
 }
