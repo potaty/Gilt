@@ -7,6 +7,8 @@ import Comment from '../components/comment'
 
 import http from '../http'
 
+global.ACCESS_TOKEN = '09fbdbe418c4d1e338acc4ed6743818af913c234'
+
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
