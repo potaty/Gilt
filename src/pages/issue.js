@@ -3,12 +3,9 @@ import { Button, Image, ScrollView, StyleSheet, TextInput, ToolbarAndroid, View,
 import TimeAgo from 'react-native-timeago'
 import Markdown from 'react-native-simple-markdown'
 
-<<<<<<< Updated upstream
 import Comment from '../components/comment'
-=======
 import Qingzhen from '../images/qingzhen.png'
 import CommentList from '../components/comment'
->>>>>>> Stashed changes
 
 import http from '../http'
 
@@ -103,7 +100,6 @@ export default class Issue extends React.Component {
   render() {
     return (
       <View>
-<<<<<<< Updated upstream
         <ToolbarAndroid style={styles.toolbar}
           title={this.state.issue ? this.state.issue.title : (
             this.props.route.type === 'issue' ? 'Issue' : 'Pull Request'
@@ -138,37 +134,6 @@ export default class Issue extends React.Component {
             </View>
           </ScrollView>
         }
-=======
-        <View>
-          <View>
-            <Button title={'⚠️ Open'} color="#00c853"></Button>
-            <Button title={'Click me to see the changes in code.'} color="#81d4fa" style={styles.code}></Button>
-          </View>
-        </View>
-        <Text style={styles.title}>Update to Table.alias method (#5)</Text>
-        <View style={styles.detail}>
-          <Image source={Qingzhen} style={styles.head} />
-          <View style={styles.message}>
-            <Text style={styles.author}>{'potaty'}</Text>
-            <Text> wants to merge 1 commit into </Text>
-            <Text style={styles.branch}> brynary:master </Text>
-            <Text> from </Text>
-            <Text style={styles.branch}> aliceatlas:master </Text>
-          </View>
-        </View>
-        <View style={styles.description}>
-          <Text>Change the unstandable part in guide.</Text>
-        </View>
-        <CommentList pic={Qingzhen} author={'potaty'} time={'one hour ago'} comment={'please dont lasdasidjiasjdiasjdiajsidjasidjiasjdiasjidjasidjiasjdiaugh.'}></Comment>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => this.setState({text})}
-          value={this.state}
-          multiline = {true}
-          numberOfLines = {2}
-        />
-        <Button title={'Comment'}></Button>
->>>>>>> Stashed changes
       </View>
     )
   }
