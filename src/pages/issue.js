@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginHorizontal: 15,
     marginVertical: 10,
   },
@@ -86,8 +86,9 @@ export default class Issue extends React.Component {
   state = {}
 
   componentDidMount = async () => {
+    console.log(this.props.route)
     const issue = await (
-      await http.get('/repos/poooi/poi/issues/1243')
+      await http.get(this.props.route.api)
     ).json()
     this.setState({ issue })
   }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, ToolbarAndroid, View } from 'react-native'
+import { ListView, StyleSheet, ToolbarAndroid, View } from 'react-native'
 
 import MessageList from '../components/message-list'
 

@@ -50,7 +50,7 @@ class GiltApplication extends React.Component {
   }
   render() {
     return (
-      <Navigator initialRoute={routes[8]} renderScene={this.renderScene}
+      <Navigator initialRoute={routes[0]} renderScene={this.renderScene}
         configureScene={() => Navigator.SceneConfigs.FloatFromBottomAndroid} />
     )
   }

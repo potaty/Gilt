@@ -1,6 +1,8 @@
 import React from 'react'
-import { Image, StyleSheet, ToolbarAndroid, View, Text, ListView } from 'react-native'
+import { Image, StyleSheet, ToolbarAndroid, TouchableHighlight, View, Text, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
+
+import routes from '../routes'
 
 import closedIssueIcon from '../images/checked.png'
 import issueIcon from '../images/warning.png'
@@ -56,6 +58,12 @@ const styles = StyleSheet.create({
 })
 
 export default class MessageList extends React.Component {
+  handleClickLink = message => {
+    this.props.navigator.push(Object.assign({}, routes[8], {
+      api: message.url,
+    }))
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -78,9 +86,10 @@ export default class MessageList extends React.Component {
               { message.type === 'MergedPullRequest' &&
                 <Image style={styles.icon} source={mergedPullRequestIcon} /> }
               <View key={message.id} style={styles.list}>
-                <Text style={styles.title}>
-                  { message.title }
-                </Text>
+                <TouchableHighlight underlayColor="#e0e0e0"
+                  onPress={this.handleClickLink.bind(this, message)}>
+                  <Text style={styles.title}>{ message.title }</Text>
+                </TouchableHighlight>
                 <View style={styles.timeContainer}>
                   { message.user && <Text style={styles.time}>
                     Open by {message.user + ' '}

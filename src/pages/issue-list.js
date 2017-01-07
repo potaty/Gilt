@@ -44,7 +44,7 @@ export default class IssueList extends React.Component {
       <ToolbarAndroid style={styles.toolbar} titleColor="#ffffff"
         title={this.props.route.type === 'issue' ? 'Issues' : 'Pull Requests'} />
       { !!this.state.dataSource &&
-        <MessageList data={this.state.dataSource} />
+        <MessageList navigator={this.props.navigator} data={this.state.dataSource} />
       }
     </View>)
   }
