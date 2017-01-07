@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
 const emojiMap = {
   'WatchEvent': '⭐️ ',
   'ForkEvent': '📚 ',
-  'CreateEvent': '  ',
-  'PublicEvent': '  ',
+  'CreateEvent': '🍀 ',
+  'PublicEvent': '🌳 ',
 }
 
 export default class Dashboard extends React.Component {

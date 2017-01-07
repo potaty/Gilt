@@ -7,6 +7,8 @@ const routes = [
   { name: 'PROFILE', index: 5 },
   { name: 'NOTIFICATION', index: 6 },
   { name: 'USER_LIST', index: 7 },
+  { name: 'ISSUE_LIST', index: 8 },
+  { name: 'ISSUE', index: 9 },
 ]
 
 export default routes

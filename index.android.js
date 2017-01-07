@@ -10,6 +10,8 @@ import Readme from './src/pages/readme'
 import Dashboard from './src/pages/dashboard'
 import Notification from './src/pages/notification'
 import UserList from './src/pages/user-list'
+import Issue from './src/pages/issue'
+import IssueList from './src/pages/issue-list'
 
 class GiltApplication extends React.Component {
   initNavigator = navigator => {
@@ -43,6 +45,10 @@ class GiltApplication extends React.Component {
         return <Notification route={route} navigator={navigator} />
       case 'USER_LIST':
         return <UserList route={route} navigator={navigator} />
+      case 'ISSUE':
+        return <Issue route={route} navigator={navigator} />
+      case 'ISSUE_LIST':
+        return <IssueList route={route} navigator={navigator} />
     }
   }
   render() {

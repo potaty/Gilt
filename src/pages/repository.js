@@ -70,7 +70,7 @@ export default class Repository extends React.Component {
       repo: data,
       dataSource: dataSource.cloneWithRows([
         `⭐    Stargazers (${data.stargazers_count})`,
-        `⭐    Watchers (${data.subscribers_count})`,
+        `⌚️    Watchers (${data.subscribers_count})`,
         `🍴    Forks (${data.forks_count})`,
         '🐣    Releases',
         '🐷    Contributors',
