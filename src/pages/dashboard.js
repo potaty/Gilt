@@ -5,6 +5,9 @@ import TimeAgo from 'react-native-timeago'
 import http from '../http'
 import routes from '../routes'
 
+import notificationIcon from '../images/notification.png'
+import userIcon from '../images/user.png'
+
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
@@ -85,6 +88,12 @@ export default class Dashboard extends React.Component {
         base.action = 'open sourced'
       } else if (event.type === 'CreateEvent') {
         base.action = 'created'
+      } else if (event.type === 'IssueCommentEvent') {
+        base.action = `commented on`
+      } else if (event.type === 'PushEvent') {
+        base.action = 'pushed a commit to'
+      } else if (event.type === 'IssuesEvent') {
+        base.action = `${event.payload.action} a issue on`
       }
       return base
     })
@@ -104,10 +113,29 @@ export default class Dashboard extends React.Component {
     this.props.navigator.push(Object.assign({}, routes[2], { repo }))
   }
 
+  handleClickIcon = (index) => {
+    if (index === 0) {
+      this.props.navigator.push(Object.assign({}, routes[4]))
+    } else {
+      this.props.navigator.push(Object.assign({}, routes[5]))
+    }
+  }
+
   render() {
     return (
       <View>
-        <ToolbarAndroid style={styles.toolbar} title="Dashboard" titleColor="#ffffff" />
+        <ToolbarAndroid style={styles.toolbar}
+          title="Dashboard" titleColor="#ffffff"
+          actions={[{
+            title: 'Profile',
+            icon: userIcon,
+            show: 'always',
+          }, {
+            title: 'Notifications',
+            icon: notificationIcon,
+            show: 'always',
+          }]}
+          onActionSelected={this.handleClickIcon} />
         { !!this.state.dataSource &&
           <ListView style={styles.container}
             dataSource={this.state.dataSource}

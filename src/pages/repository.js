@@ -68,13 +68,22 @@ export default class Repository extends React.Component {
       starred: star.status === 204,
       watched: watch.subscribed,
       repo: data,
-      dataSource: dataSource.cloneWithRows([
-        `⭐    Stargazers (${data.stargazers_count})`,
-        `⌚️    Watchers (${data.subscribers_count})`,
-        `🍴    Forks (${data.forks_count})`,
-        '🐣    Releases',
-        '🐷    Contributors',
-      ]),
+      dataSource: dataSource.cloneWithRows([{
+        text: `⭐    Stargazers (${data.stargazers_count})`,
+        onClick: this.handleShowStargazers,
+      }, {
+        text: `⌚️    Watchers (${data.subscribers_count})`,
+        onClick: this.handleShowWatchers,
+      }, {
+        text: `🍴    Forks (${data.forks_count})`,
+        onClick: () => {} /* this.handleShowForks */,
+      }, {
+        text: '🐣    Releases',
+        onClick: () => {} /* this.handleShowReleases */,
+      }, {
+        text: '🐷    Contributors',
+        onClick: this.handleShowContributors,
+      }]),
     })
     const readme = await (await http.get(`/repos/${repo}/readme`,
       'application/vnd.github.VERSION.html')).text()
@@ -89,6 +98,49 @@ export default class Repository extends React.Component {
     }))
   }
 
+  handleShowStargazers = () => {
+    this.props.navigator.push(Object.assign({}, routes[6], {
+      title: 'Stargazers',
+      api: `/repos/${this.props.route.repo}/stargazers`,
+    }))
+  }
+
+  handleShowWatchers = () => {
+    this.props.navigator.push(Object.assign({}, routes[6], {
+      title: 'Watchers',
+      api: `/repos/${this.props.route.repo}/subscribers`,
+    }))
+  }
+
+  handleShowContributors = () => {
+    this.props.navigator.push(Object.assign({}, routes[6], {
+      title: 'Contributors',
+      api: `/repos/${this.props.route.repo}/contributors`,
+    }))
+  }
+
+  handleStar = async () => {
+    await http.put(`/user/starred/${this.props.route.repo}`)
+    this.setState({ starred: true })
+  }
+
+  handleUnstar = async () => {
+    await http.delete(`/user/starred/${this.props.route.repo}`)
+    this.setState({ starred: false })
+  }
+
+  handleWatch = async () => {
+    const res = await http.put(`/repos/${this.props.route.repo}/subscription`, {
+      subscribed: true,
+    })
+    this.setState({ watched: true })
+  }
+
+  handleUnwatch = async () => {
+    await http.delete(`/repos/${this.props.route.repo}/subscription`)
+    this.setState({ watched: false })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -97,26 +149,28 @@ export default class Repository extends React.Component {
         { !!this.state.repo && <View style={styles.buttonContainer}>
             <View style={styles.buttonWrapper}>
               { !this.state.starred && <Button title={`    ⭐ Star    `}
-                color="#666" style={styles.button} onPress={() => {}} /> }
+                color="#666" style={styles.button} onPress={this.handleStar} /> }
               { this.state.starred && <Button title={`    ⭐ Unstar    `}
-                color="#666" style={styles.button} onPress={() => {}} /> }
+                color="#666" style={styles.button} onPress={this.handleUnstar} /> }
             </View>
             <View style={styles.buttonWrapper}>
               { !this.state.watched && <Button title={`    ⌚️ Watch   `}
-                color="#666" style={styles.button} onPress={() => {}} /> }
+                color="#666" style={styles.button} onPress={this.handleWatch} /> }
               { this.state.watched && <Button title={`    ⌚️ Unwatch   `}
-                color="#666" style={styles.button} onPress={() => {}} /> }
+                color="#666" style={styles.button} onPress={this.handleUnwatch} /> }
             </View>
           </View>
         }
         { !!this.state.dataSource && <View>
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) => (
-                <View style={styles.list}>
-                  <Text>{rowData}</Text>
-                  <Text> {'>'} </Text>
-                </View>
+            <ListView dataSource={this.state.dataSource}
+              renderRow={row => (
+                <TouchableHighlight underlayColor="#e0e0e0"
+                  onPress={row.onClick}>
+                  <View style={styles.list}>
+                    <Text>{row.text}</Text>
+                    <Text>></Text>
+                  </View>
+                </TouchableHighlight>
               )}
               renderSeparator={(sectionId, rowId) => (
                 <View key={rowId} style={styles.separator} />

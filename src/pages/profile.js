@@ -5,9 +5,9 @@ import _ from 'lodash'
 import http from '../http'
 import routes from '../routes'
 
-import MailIcon from '../images/mail.png'
-import LinkIcon from '../images/link.png'
-import RepoIcon from '../images/repo.png'
+import mailIcon from '../images/mail.png'
+import linkIcon from '../images/link.png'
+import repoIcon from '../images/repo.png'
 
 const styles = StyleSheet.create({
   container: {
@@ -156,13 +156,13 @@ export default class Profile extends React.Component {
               <Text style={styles.nickname}>{ this.state.user.login }</Text>
               { !!this.state.user.email &&
                 <View style={styles.mail}>
-                  <Image source={MailIcon} />
+                  <Image source={mailIcon} />
                   <Text style={styles.mailText}>{ this.state.user.email }</Text>
                 </View>
               }
               { !!this.state.user.blog &&
                 <View style={styles.link}>
-                  <Image source={LinkIcon} />
+                  <Image source={linkIcon} />
                   <Text style={styles.linkText}>{ this.state.user.blog }</Text>
                 </View>
               }
@@ -212,7 +212,7 @@ export default class Profile extends React.Component {
                 <TouchableHighlight key={repo.id} underlayColor="#e0e0e0"
                   onPress={this.handleShowRepo.bind(this, repo.full_name)}>
                   <View style={styles.repo}>
-                    <Image style={styles.repoLogo} source={RepoIcon} />
+                    <Image style={styles.repoLogo} source={repoIcon} />
                     <Text style={styles.repoTitle}>
                       {repo.full_name.length > 33 ? repo.full_name.substring(0, 33) + '...' : repo.full_name}
                     </Text>

@@ -1,22 +1,24 @@
 import React from 'react'
-import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInput, ToolbarAndroid, View, Text, ListView } from 'react-native'
+import { Image, StyleSheet, ToolbarAndroid, View, Text, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
+
+import issue from '../images/warning.png'
+import pr from '../images/merge.png'
 
 const styles = StyleSheet.create({
   repo: {
     fontWeight: 'bold',
     marginRight: 10,
   },
-  repoName: {
+  title: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: '#1e88e5',
   },
   list: {
     flex: 1,
-    padding: 8,
     justifyContent: 'space-between',
-    marginRight: 20,
-    marginLeft: 20,
+    marginVertical: 10,
   },
   separator: {
     flex: 1,
@@ -34,6 +36,20 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
   },
+  icon: {
+    margin: 15,
+    width: 24,
+    height: 24,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+  },
+  time: {
+    fontSize: 12,
+  }
 })
 
 export default class MessageList extends React.Component {
@@ -48,14 +64,22 @@ export default class MessageList extends React.Component {
         }
         <ListView dataSource={this.props.data}
           renderRow={message =>
-            <View key={message.id} style={styles.list}>
-              <TimeAgo time={message.updated_at} />
-              <View style={styles.detail}>
-                <Text style={styles.repoName}>
+            <View style={styles.row}>
+              { message.type === 'Issue' &&
+                <Image style={styles.icon} source={issue} /> }
+              { message.type === 'PullRequest' &&
+                <Image style={styles.icon} source={pr} /> }
+              <View key={message.id} style={styles.list}>
+                <Text style={styles.title}>
                   { message.title }
                 </Text>
+                <View style={styles.timeContainer}>
+                  <Text style={styles.time}>Updated </Text>
+                  <TimeAgo style={styles.time} time={message.updated_at} />
+                </View>
               </View>
-            </View>}
+            </View>
+          }
           renderSeparator={(sectionId, rowId) => (
             <View key={rowId} style={styles.separator} />
           )}
