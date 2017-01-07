@@ -5,7 +5,6 @@ const routes = [
   { name: 'REPOSITORY', title: 'potaty/Gilt', index: 3 },
   { name: 'README', title: 'potaty/Gilt', index: 4 },
   { name: 'PROFILE', index: 5 },
-  { name: 'DASHBOARD', index: 6},
 ]
 
 export default routes

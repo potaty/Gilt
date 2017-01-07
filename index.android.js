@@ -29,14 +29,14 @@ class GithubClient extends React.Component {
         return <Welcome route={route} navigator={navigator} />
       case 'LOGIN':
         return <Auth route={route} navigator={navigator} />
-      case 'DASHBOARD':
-        return <Profile route={route} navigator={navigator} />
       case 'REPOSITORY':
         return <Repository route={route} navigator={navigator} />
       case 'DASHBOARD':
         return <Dashboard route={route} navigator={navigator} />
       case 'README':
         return <Readme route={route} navigator={navigator} />
+      case 'PROFILE':
+        return <Profile route={route} navigator={navigator} />
     }
   }
   render() {
