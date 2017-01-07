@@ -43,7 +43,10 @@ export default class MessageList extends React.Component {
   state = {dataSource: this.props.data}
   render() {
     return (<View style={styles.optionContainer}>
-        <Text style={styles.repoTitle}>{this.props.title}</Text>
+        {!!this.props.title && <Text style={styles.repoTitle}>
+           {this.props.title}
+         </Text>
+        }
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <View style={styles.list}>
