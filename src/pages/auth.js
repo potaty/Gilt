@@ -34,6 +34,7 @@ export default class Auth extends React.Component {
       })
       const body = await response.json()
       global.ACCESS_TOKEN = body.access_token
+      console.log(body.access_token)
       this.props.navigator.replace(Object.assign({}, routes[1]))
     }
   }

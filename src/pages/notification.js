@@ -3,6 +3,8 @@ import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInp
 
 import MessageList from '../components/message-list'
 
+import http from '../http'
+
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
@@ -38,26 +40,46 @@ const styles = StyleSheet.create({
 export default class Notification extends React.Component {
   state = {}
 
-  componentDidMount() {
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  componentDidMount = async () => {
+    const raw = await (
+      await http.get('/notifications')
+    ).json()
+    const notifications = []
+    const titles = []
+    const map = {}
+    for (const record of raw) {
+      const repo = record.repository.full_name
+      if (!map[repo]) {
+        notifications.push(map[repo] = [])
+        titles.push(repo)
+      }
+      map[repo].push({
+        id: record.id,
+        type: record.subject.type,
+        title: record.subject.title,
+        url: record.subject.url.substr(22),
+        updated_at: record.updated_at,
+      })
+    }
     this.setState({
-      dataSource: dataSource.cloneWithRows([['2 hours ago', '💬 Add a new issue.', 'please fix this chibug please'],
-                                            ['2 hours ago', '🙋 Can not open this part.', 'please fix this chibug please'],
-                                            ['2 hours ago', '💬 Please close the mouse', 'please fix this chibug please']]),
+      dataSources: notifications.map((group, idx) => {
+        const dataSource = new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 !== r2
+        }).cloneWithRows(group)
+        dataSource.title = titles[idx]
+        return dataSource
+      }),
     })
   }
   render() {
-    return (<View>
-      <ToolbarAndroid style={styles.toolbar} title={"Notification"} titleColor="#ffffff" />
-      { !!this.state.dataSource && <View>
-        <MessageList data={this.state.dataSource} title={"poooi/poi"}/>
-        </View>
-      }
-      { !!this.state.dataSource && <View>
-        <MessageList data={this.state.dataSource} title={"potaty/memeda"}/>
-        </View>
-      }
-    </View>
+    return (
+      <View>
+        <ToolbarAndroid style={styles.toolbar}
+          title="Notification" titleColor="#ffffff" />
+        { !!this.state.dataSources && this.state.dataSources.map(group => (
+            <MessageList key={group.title} data={group} title={group.title} />
+        )) }
+      </View>
     )
   }
 }

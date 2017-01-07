@@ -63,8 +63,6 @@ export default class Dashboard extends React.Component {
 
   componentDidMount = async () => {
     const user = await (await http.get('/user')).json()
-    console.log(user)
-    console.log(`/users/${user.login}/received_events`)
     const events = (await (
       await http.get(`/users/${user.login}/received_events`)
     ).json()).map(event => {
