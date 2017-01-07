@@ -46,7 +46,7 @@ export default class UserList extends React.Component {
     })
   }
   handleShowProfile = login => {
-    this.props.navigator.push(Object.assign({}, routes[5], { login }))
+    this.props.navigator.push(Object.assign({}, routes[4], { login }))
   }
   render() {
     return (

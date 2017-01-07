@@ -126,18 +126,18 @@ export default class Profile extends React.Component {
   }
 
   handleShowRepo = repo => {
-    this.props.navigator.push(Object.assign({}, routes[3], { repo }))
+    this.props.navigator.push(Object.assign({}, routes[2], { repo }))
   }
 
   handleShowFollowing = login => {
-    this.props.navigator.push(Object.assign({}, routes[7], {
+    this.props.navigator.push(Object.assign({}, routes[6], {
       title: 'Following',
       api: `/users/${login}/following`,
     }))
   }
 
   handleShowFollowers = login => {
-    this.props.navigator.push(Object.assign({}, routes[7], {
+    this.props.navigator.push(Object.assign({}, routes[6], {
       title: 'Followers',
       api: `/users/${login}/followers`,
     }))

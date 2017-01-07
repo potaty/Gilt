@@ -10,11 +10,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  toolbar: {
+    backgroundColor: '#263238',
+    height: 56,
+  },
 })
 
 export default class Auth extends React.Component {
   handleNavigationStateChange = async (state) => {
-    if (state.url.indexOf('?code=') !== -1) {
+    if (state.url.indexOf('?code=') !== -1 && !global.ACCESS_TOKEN_PROCESSED) {
+      global.ACCESS_TOKEN_PROCESSED = true
       const response = await fetch('https://github.com/login/oauth/access_token', {
         method: 'POST',
         headers: {
@@ -28,17 +33,15 @@ export default class Auth extends React.Component {
         }),
       })
       const body = await response.json()
-      if (!global.ACCESS_TOKEN) {
-        global.ACCESS_TOKEN = body.access_token
-        console.log(body.access_token)
-      }
-      this.props.navigator.replace(Object.assign({}, routes[5]))
+      global.ACCESS_TOKEN = body.access_token
+      this.props.navigator.replace(Object.assign({}, routes[1]))
     }
   }
   render() {
     return (
       <View style={styles.container}>
-        <ToolbarAndroid title="Login" />
+        <ToolbarAndroid title="Login" style={styles.toolbar}
+           title="Login" titleColor="#ffffff" />
         <WebView source={{ uri: authURI }}
           onNavigationStateChange={this.handleNavigationStateChange} />
       </View>

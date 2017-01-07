@@ -4,7 +4,6 @@ import { Alert, AppRegistry, BackAndroid, Button, Navigator, StyleSheet, TextInp
 import routes from './src/routes'
 import Profile from './src/pages/profile'
 import Auth from './src/pages/auth'
-import Welcome from './src/pages/welcome'
 import Repository from './src/pages/repository'
 import Readme from './src/pages/readme'
 import Dashboard from './src/pages/dashboard'
@@ -29,8 +28,6 @@ class GiltApplication extends React.Component {
       this.initNavigator(navigator)
     }
     switch (route.name) {
-      case 'WELCOME':
-        return <Welcome route={route} navigator={navigator} />
       case 'LOGIN':
         return <Auth route={route} navigator={navigator} />
       case 'DASHBOARD':

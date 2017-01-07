@@ -62,8 +62,11 @@ export default class Dashboard extends React.Component {
   state = {}
 
   componentDidMount = async () => {
+    const user = await (await http.get('/user')).json()
+    console.log(user)
+    console.log(`/users/${user.login}/received_events`)
     const events = (await (
-      await http.get(`/users/${this.props.route.login}/received_events`)
+      await http.get(`/users/${user.login}/received_events`)
     ).json()).map(event => {
       const base = {
         id: event.id,
@@ -96,11 +99,11 @@ export default class Dashboard extends React.Component {
   }
 
   handleShowProfile = login => {
-    this.props.navigator.push(Object.assign({}, routes[5], { login }))
+    this.props.navigator.push(Object.assign({}, routes[4], { login }))
   }
 
   handleShowRepo = repo => {
-    this.props.navigator.push(Object.assign({}, routes[3], { repo }))
+    this.props.navigator.push(Object.assign({}, routes[2], { repo }))
   }
 
   render() {

@@ -1,14 +1,13 @@
 const routes = [
-  { name: 'WELCOME', index: 0 },
-  { name: 'LOGIN', index: 1 },
-  { name: 'DASHBOARD', index: 2 },
-  { name: 'REPOSITORY', index: 3 },
-  { name: 'README', index: 4 },
-  { name: 'PROFILE', index: 5 },
-  { name: 'NOTIFICATION', index: 6 },
-  { name: 'USER_LIST', index: 7 },
-  { name: 'ISSUE_LIST', index: 8 },
-  { name: 'ISSUE', index: 9 },
+  { name: 'LOGIN', index: 0 },
+  { name: 'DASHBOARD', index: 1 },
+  { name: 'REPOSITORY', index: 2 },
+  { name: 'README', index: 3 },
+  { name: 'PROFILE', index: 4 },
+  { name: 'NOTIFICATION', index: 5 },
+  { name: 'USER_LIST', index: 6 },
+  { name: 'ISSUE_LIST', index: 7 },
+  { name: 'ISSUE', index: 8 },
 ]
 
 export default routes
