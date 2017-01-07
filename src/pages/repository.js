@@ -7,7 +7,7 @@ import routes from '../routes'
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
-    margin: 10,
+    margin: 5,
     justifyContent: 'center',
   },
   toolbar: {
@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  optionContainer: {
-    marginTop: 5,
-  },
   separator: {
     flex: 1,
     height: StyleSheet.hairlineWidth,
@@ -35,7 +32,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   list: {
-    height: 40,
     marginLeft: 12,
     flex: 1,
     padding: 8,
@@ -45,7 +41,7 @@ const styles = StyleSheet.create({
   },
   readme: {
     flex: 1,
-    margin: 20,
+    margin: 10,
   },
   readmeLink: {
     fontSize: 15,
@@ -60,63 +56,77 @@ const styles = StyleSheet.create({
 export default class Repository extends React.Component {
   state = { readme: '' }
 
-  async componentDidMount() {
-    const title = this.props.route.title
-    const star = await http.get(`/user/starred/${title}`)
-    const watch = await (await http.get(`/repos/${title}/subscription`)).json()
-    const repo = await (await http.get(`/repos/${title}`)).json()
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  componentDidMount = async () => {
+    const repo = this.props.route.repo
+    const star = await http.get(`/user/starred/${repo}`)
+    const watch = await (await http.get(`/repos/${repo}/subscription`)).json()
+    const data = await (await http.get(`/repos/${repo}`)).json()
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    })
     this.setState({
       starred: star.status === 204,
       watched: watch.subscribed,
-      repo: repo,
+      repo: data,
       dataSource: dataSource.cloneWithRows([
-        `⭐    Stargazers (${repo.stargazers_count})`,
-        `⭐    Watchers (${repo.subscribers_count})`,
-        `🍴    Forks (${repo.forks_count})`,
+        `⭐    Stargazers (${data.stargazers_count})`,
+        `⭐    Watchers (${data.subscribers_count})`,
+        `🍴    Forks (${data.forks_count})`,
         '🐣    Releases',
         '🐷    Contributors',
       ]),
     })
-    const readme = await (await http.get(`/repos/${title}/readme`, 'application/vnd.github.VERSION.html')).text()
+    const readme = await (await http.get(`/repos/${repo}/readme`,
+      'application/vnd.github.VERSION.html')).text()
     this.setState({
       readme: readme,
     })
   }
 
   handleShowReadme = () => {
-    this.props.navigator.push(Object.assign(routes[4], {title: this.props.route.title}))
+    this.props.navigator.push(Object.assign(routes[4], {
+      repo: this.props.route.repo
+    }))
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ToolbarAndroid style={styles.toolbar} title={this.props.route.title} titleColor="#ffffff" />
+        <ToolbarAndroid style={styles.toolbar} title={this.props.route.repo}
+          titleColor="#ffffff" />
         { !!this.state.repo && <View style={styles.buttonContainer}>
             <View style={styles.buttonWrapper}>
-              { !this.state.starred && <Button title={`    ⭐ Star    `} color="#666" style={styles.button}
-                onPress={() => {}} /> }
-              { this.state.starred && <Button title={`    ⭐ Unstar    `} color="#666" style={styles.button}
-                onPress={() => {}} /> }
+              { !this.state.starred && <Button title={`    ⭐ Star    `}
+                color="#666" style={styles.button} onPress={() => {}} /> }
+              { this.state.starred && <Button title={`    ⭐ Unstar    `}
+                color="#666" style={styles.button} onPress={() => {}} /> }
             </View>
             <View style={styles.buttonWrapper}>
-              { !this.state.watched && <Button title={`    ⌚️ Watch   `} color="#666" style={styles.button}
-                onPress={() => {}} /> }
-              { this.state.watched && <Button title={`    ⌚️ Unwatch   `} color="#666" style={styles.button}
-                onPress={() => {}} /> }
+              { !this.state.watched && <Button title={`    ⌚️ Watch   `}
+                color="#666" style={styles.button} onPress={() => {}} /> }
+              { this.state.watched && <Button title={`    ⌚️ Unwatch   `}
+                color="#666" style={styles.button} onPress={() => {}} /> }
             </View>
           </View>
         }
-        { !!this.state.dataSource && <View style={styles.optionContainer}>
+        { !!this.state.dataSource && <View>
             <ListView
               dataSource={this.state.dataSource}
-              renderRow={(rowData) => <View style={styles.list}><Text>{rowData}</Text><Text> {'>'} </Text></View>}
-              renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+              renderRow={(rowData) => (
+                <View style={styles.list}>
+                  <Text>{rowData}</Text>
+                  <Text> {'>'} </Text>
+                </View>
+              )}
+              renderSeparator={(sectionId, rowId) => (
+                <View key={rowId} style={styles.separator} />
+              )}
             />
-          </View>
-        }
+          </View> }
         { !!this.state.readme && <View style={styles.readme}>
-          <Text style={styles.readmeLink} onPress={this.handleShowReadme}>README</Text>
+          <Text style={styles.readmeLink} onPress={this.handleShowReadme}>
+            README >
+          </Text>
           <WebView source={{ html: this.state.readme }} />
         </View> }
       </View>

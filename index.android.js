@@ -9,7 +9,7 @@ import Repository from './src/pages/repository'
 import Readme from './src/pages/readme'
 import Dashboard from './src/pages/dashboard'
 
-class GithubClient extends React.Component {
+class GiltApplication extends React.Component {
   initNavigator = navigator => {
     this.navigator = navigator
     BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -29,10 +29,10 @@ class GithubClient extends React.Component {
         return <Welcome route={route} navigator={navigator} />
       case 'LOGIN':
         return <Auth route={route} navigator={navigator} />
-      case 'REPOSITORY':
-        return <Repository route={route} navigator={navigator} />
       case 'DASHBOARD':
         return <Dashboard route={route} navigator={navigator} />
+      case 'REPOSITORY':
+        return <Repository route={route} navigator={navigator} />
       case 'README':
         return <Readme route={route} navigator={navigator} />
       case 'PROFILE':
@@ -41,9 +41,9 @@ class GithubClient extends React.Component {
   }
   render() {
     return (
-      <Navigator initialRoute={routes[0]} renderScene={this.renderScene} />
+      <Navigator initialRoute={routes[2]} renderScene={this.renderScene} />
     )
   }
 }
 
-AppRegistry.registerComponent('GithubClient', () => GithubClient)
+AppRegistry.registerComponent('Gilt', () => GiltApplication)

@@ -104,8 +104,11 @@ export default class Profile extends React.Component {
     user: {},
     repos: [],
   }
+
   componentDidMount = async () => {
-    const user = await (await http.get('/user')).json()
+    const user = await (
+      await http.get(this.props.route.login ? `/users/${this.props.route.login}` : '/user')
+    ).json()
     this.setState({
       loaded: true,
       user: user,
@@ -116,17 +119,17 @@ export default class Profile extends React.Component {
       repos: sorted.slice(0, Math.min(sorted.length, 6)),
     })
   }
-  handleShowRepo = (name) => {
-    this.props.navigator.push(Object.assign(routes[3], { title: name }))
+
+  handleShowRepo = repo => {
+    this.props.navigator.push(Object.assign(routes[3], { repo }))
   }
+
   render() {
-    if (!this.state.loaded) {
-      return <View />
-    }
     return (
       <View>
-        <ToolbarAndroid style={styles.toolbar} title="Profile" titleColor="#ffffff" />
-        <View style={styles.container}>
+        <ToolbarAndroid style={styles.toolbar}
+          title={this.props.route.login || 'Profile'} titleColor="#ffffff" />
+        {this.state.loaded && <View style={styles.container}>
           <View style={styles.profile}>
             <Image style={styles.head} source={{ uri: this.state.user.avatar_url }} />
             <View style={styles.contact}>
@@ -149,7 +152,7 @@ export default class Profile extends React.Component {
           <View style={styles.detail}>
             <View style={styles.datas}>
               <Text style={styles.number}>
-                { this.state.user.public_repos + this.state.user.owned_private_repos }
+                { this.state.user.public_repos + (this.state.user.owned_private_repos || 0) }
               </Text>
               <Text>Repositories</Text>
             </View>
@@ -168,14 +171,16 @@ export default class Profile extends React.Component {
                 <TouchableHighlight key={repo.id} onPress={this.handleShowRepo.bind(this, repo.full_name)}>
                   <View style={styles.repo}>
                     <Image style={styles.repoLogo} source={RepoIcon} />
-                    <Text style={styles.repoTitle}>{repo.full_name}</Text>
+                    <Text style={styles.repoTitle}>
+                      {repo.full_name.length > 33 ? repo.full_name.substring(0, 33) + '...' : repo.full_name}
+                    </Text>
                     <Text style={styles.repoStar}>⭐ {repo.stargazers_count}</Text>
                   </View>
                 </TouchableHighlight>
               ))
             }
           </View>
-        </View>
+        </View>}
       </View>
     )
   }

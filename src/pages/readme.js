@@ -14,7 +14,7 @@ export default class Readme extends React.Component {
   state = { readme: '' }
 
   async componentDidMount() {
-    const readme = await (await http.get(`/repos/${this.props.route.title}/readme`,
+    const readme = await (await http.get(`/repos/${this.props.route.repo}/readme`,
       'application/vnd.github.VERSION.html')).text()
     this.setState({
       readme: readme,

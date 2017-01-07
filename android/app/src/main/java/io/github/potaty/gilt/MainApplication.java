@@ -1,4 +1,4 @@
-package com.githubclient;
+package io.github.potaty.gilt;
 
 import android.app.Application;
 import android.util.Log;
