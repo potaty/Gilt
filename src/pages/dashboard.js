@@ -5,8 +5,6 @@ import TimeAgo from 'react-native-timeago'
 import http from '../http'
 import routes from '../routes'
 
-global.ACCESS_TOKEN = 'e7ff70bbe7ef0c83616c5d6c5de2aab7d90ac758'
-
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
