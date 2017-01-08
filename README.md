@@ -1,4 +1,4 @@
-## Gilt - A Github Client implement by react-native (android version).
+## Gilt - A Github Client implement by react-native. Get the real experience of Github!
 
 **Method:**
 
