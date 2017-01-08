@@ -52,7 +52,8 @@ export default class Notification extends React.Component {
         <ToolbarAndroid style={styles.toolbar}
           title="Notification" titleColor="#ffffff" />
         { !!this.state.dataSources && this.state.dataSources.map(group => (
-            <MessageList key={group.title} data={group} title={group.title} />
+            <MessageList key={group.title} navigator={this.props.navigator}
+              data={group} title={group.title} />
         )) }
       </View>
     )

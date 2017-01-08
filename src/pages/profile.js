@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, ToolbarAndroid, TouchableHighlight, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, ToolbarAndroid, TouchableHighlight, View } from 'react-native'
 import _ from 'lodash'
 
 import http from '../http'
@@ -148,7 +148,7 @@ export default class Profile extends React.Component {
       <View>
         <ToolbarAndroid style={styles.toolbar}
           title={this.props.route.login || 'Profile'} titleColor="#ffffff" />
-        {this.state.loaded && <View style={styles.container}>
+        {this.state.loaded && <ScrollView style={styles.container}>
           <View style={styles.profile}>
             <Image style={styles.head} source={{ uri: this.state.user.avatar_url }} />
             <View style={styles.contact}>
@@ -222,7 +222,7 @@ export default class Profile extends React.Component {
               ))
             }
           </View>
-        </View>}
+        </ScrollView>}
       </View>
     )
   }
