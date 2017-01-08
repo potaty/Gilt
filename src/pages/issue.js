@@ -3,9 +3,8 @@ import { Button, Image, ScrollView, StyleSheet, TextInput, ToolbarAndroid, View,
 import TimeAgo from 'react-native-timeago'
 import Markdown from 'react-native-simple-markdown'
 
-import Comment from '../components/comment'
 import Qingzhen from '../images/qingzhen.png'
-import CommentList from '../components/comment'
+import CommentList from '../components/comment-list'
 
 import http from '../http'
 
@@ -95,6 +94,12 @@ export default class Issue extends React.Component {
       await http.get(this.props.route.api)
     ).json()
     this.setState({ issue })
+    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+    this.setState({
+      dataSource: dataSource.cloneWithRows([['potaty', 'two hours ago', 'please fix this chibug please'],
+                                          ['obama', 'one day ago', 'please fix this chibug please'],
+                                          ['trump', 'two days ago', 'please fix this chibug please']])
+    })
   }
 
   render() {
@@ -124,6 +129,9 @@ export default class Issue extends React.Component {
             <View style={styles.description}>
               <Markdown>{this.state.issue.body}</Markdown>
             </View>
+            { !!this.state.dataSource &&
+                <CommentList data={this.state.dataSource} title={'title'} />
+            }
             <View style={styles.inputContainer}>
               <Text style={{fontWeight: 'bold'}}>Comment</Text>
               <TextInput style={styles.input} value={this.state.text}

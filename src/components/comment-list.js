@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: 20,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   row: {
     flexDirection: 'row',
@@ -33,17 +33,24 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 })
+
 export default class CommentList extends React.Component {
   render() {
-    return (<View style={styles.container}>
-        <View style={styles.row}>
-          <Image source={this.props.pic} style={styles.head} />
-          <View style={styles.author}>
-            <Text style={styles.authorFont}>{this.props.author}</Text>
-            <Text>{'commented ' + this.props.time}</Text>
+    return (
+      <ListView dataSource={this.props.data}
+        renderRow={message =>
+          <View style={styles.container}>
+            <View style={styles.row}>
+              <Image source={Qingzhen} style={styles.head} />
+              <View style={styles.author}>
+                <Text style={styles.authorFont}>{message[0]}</Text>
+                <Text>{'commented ' + message[1]}</Text>
+              </View>
+            </View>
+            <Text style={styles.comment}>{message[2]}</Text>
           </View>
-        </View>
-        <Text style={styles.comment}>{this.props.comment}</Text>
-      </View>)
+        }
+      />
+    )
   }
 }
