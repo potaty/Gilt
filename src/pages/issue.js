@@ -1,9 +1,8 @@
 import React from 'react'
-import { Button, Image, ScrollView, StyleSheet, TextInput, ToolbarAndroid, View, Text, ListView } from 'react-native'
+import { Button, Image, ScrollView, StyleSheet, TextInput, ToolbarAndroid, ToastAndroid, View, Text, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
 import Markdown from 'react-native-simple-markdown'
 
-import Qingzhen from '../images/qingzhen.png'
 import CommentList from '../components/comment-list'
 
 import http from '../http'
@@ -27,8 +26,20 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     marginHorizontal: 10,
   },
-  badge: {
+  openBadge: {
     backgroundColor: '#00c853',
+    borderRadius: 3,
+    padding: 5,
+    paddingHorizontal: 8,
+  },
+  closedBadge: {
+    backgroundColor: '#d50000',
+    borderRadius: 3,
+    padding: 5,
+    paddingHorizontal: 8,
+  },
+  mergedBadge: {
+    backgroundColor: '#311b92',
     borderRadius: 3,
     padding: 5,
     paddingHorizontal: 8,
@@ -86,20 +97,28 @@ const styles = StyleSheet.create({
 })
 
 export default class Issue extends React.Component {
-  state = {}
+  state = {text: ''}
 
   componentDidMount = async () => {
-    console.log(this.props.route)
     const issue = await (
       await http.get(this.props.route.api)
     ).json()
     this.setState({ issue })
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    this.setState({
-      dataSource: dataSource.cloneWithRows([['potaty', 'two hours ago', 'please fix this chibug please'],
-                                          ['obama', 'one day ago', 'please fix this chibug please'],
-                                          ['trump', 'two days ago', 'please fix this chibug please']])
+    console.log(issue)
+  }
+
+  handleSubmit = async () => {
+    const comment = await http.post(this.state.issue.comments_url.substr(22), {
+      body: this.state.text,
     })
+    if (comment.status === 201) {
+      ToastAndroid.show('Commented successfully!', ToastAndroid.SHORT)
+      this.refs.comments.update()
+      this.setState({ text: '' })
+    } else {
+      console.log(comment)
+      ToastAndroid.show('Failed to comment.', ToastAndroid.SHORT)
+    }
   }
 
   render() {
@@ -111,9 +130,17 @@ export default class Issue extends React.Component {
           )} titleColor="#ffffff" />
         { !!this.state.issue && <ScrollView>
             <View style={styles.titleContainer}>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>⚠️ Open</Text>
-              </View>
+              { this.state.issue.state === 'open' && <View style={styles.openBadge}>
+                <Text style={styles.badgeText}>Open</Text>
+              </View> }
+              { this.state.issue.state === 'closed' && !this.state.issue.merged_at &&
+                <View style={styles.closedBadge}>
+                  <Text style={styles.badgeText}>Closed</Text>
+                </View> }
+              { this.state.issue.state === 'closed' && !!this.state.issue.merged_at &&
+                <View style={styles.mergedBadge}>
+                  <Text style={styles.badgeText}>Merged</Text>
+                </View> }
               <Text style={styles.title}>{ this.state.issue.title }</Text>
             </View>
             <View style={styles.detail}>
@@ -127,17 +154,15 @@ export default class Issue extends React.Component {
               </View>
             </View>
             <View style={styles.description}>
-              <Markdown>{this.state.issue.body}</Markdown>
+              <Markdown>{this.state.issue.body || ''}</Markdown>
             </View>
-            { !!this.state.dataSource &&
-                <CommentList data={this.state.dataSource} title={'title'} />
-            }
+            <CommentList ref="comments" api={this.state.issue.comments_url.substr(22)} />
             <View style={styles.inputContainer}>
               <Text style={{fontWeight: 'bold'}}>Comment</Text>
               <TextInput style={styles.input} value={this.state.text}
                 onChangeText={(text) => this.setState({text})} />
               <View style={styles.buttonContainer}>
-                <Button title="  Submit  " />
+                <Button title="  Submit  " onPress={this.handleSubmit} />
               </View>
             </View>
           </ScrollView>

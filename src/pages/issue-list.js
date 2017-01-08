@@ -16,9 +16,17 @@ export default class IssueList extends React.Component {
   state = {}
 
   componentDidMount = async () => {
-    const issues = (await (
+    let issues = await (
       await http.get(`/repos/${this.props.route.repo}/${this.props.route.type}s?state=all`)
-    ).json()).map(issue => ({
+    ).json()
+    /*
+     * GitHub api returns pull requests in the issue response. If an issue is a
+     * pull request, the object will include a pull_request key.
+     */
+    if (this.props.route.type === 'issue') {
+      issues = issues.filter(issue => !issue.pull_request)
+    }
+    issues = issues.map(issue => ({
       id: issue.id,
       type: issue.diff_url ? (
         issue.merged_at ? 'MergedPullRequest' : (

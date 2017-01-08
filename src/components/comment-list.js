@@ -1,22 +1,28 @@
 import React from 'react'
 import { Alert, AppRegistry, BackAndroid, Button, Image, Navigator, StyleSheet, TextInput, ToolbarAndroid, View, Text, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
+import Markdown from 'react-native-simple-markdown'
 
-import Qingzhen from '../images/head2.jpeg'
+import http from '../http'
 
 const styles = StyleSheet.create({
-  author: {
-    flexDirection: 'row',
-    padding: 20,
-    height: 50,
-    alignItems: 'center',
+  message: {
+    flexDirection: 'column',
+    marginHorizontal: 10,
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
-  authorFont: {
+  author: {
     fontWeight: 'bold',
-    marginRight: 5,
+  },
+  line: {
+    flexDirection: 'row',
+  },
+  time: {
+    fontSize: 12,
   },
   head: {
-    marginTop: 5,
     height: 40,
     width: 40,
     borderRadius: 20,
@@ -25,32 +31,58 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     marginLeft: 3,
-    backgroundColor: '#f2f8fa',
   },
   comment: {
-    backgroundColor: '#eeeeee',
-    marginHorizontal: 10,
-    padding: 20,
+    margin: 10,
+    backgroundColor: '#eee',
+    paddingHorizontal: 10,
   },
 })
 
 export default class CommentList extends React.Component {
+  state = {}
+
+  componentDidMount() {
+    this.update()
+  }
+
+  update = async () => {
+    const comments = await (
+      await http.get(this.props.api)
+    ).json()
+    console.log(comments)
+    if (comments.length === 0) { return }
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    })
+    this.setState({
+      dataSource: dataSource.cloneWithRows(comments),
+    })
+  }
+
   render() {
+    if (!this.state.dataSource) {
+      return <View />
+    }
     return (
-      <ListView dataSource={this.props.data}
-        renderRow={message =>
+      <ListView dataSource={this.state.dataSource}
+        renderRow={comment =>
           <View style={styles.container}>
             <View style={styles.row}>
-              <Image source={Qingzhen} style={styles.head} />
-              <View style={styles.author}>
-                <Text style={styles.authorFont}>{message[0]}</Text>
-                <Text>{'commented ' + message[1]}</Text>
+              <Image source={{ uri: comment.user.avatar_url }} style={styles.head} />
+              <View style={styles.message}>
+                <Text style={styles.author}>{comment.user.login}</Text>
+                <View style={styles.line}>
+                  <Text style={styles.time}>Commented </Text>
+                  <TimeAgo style={styles.time} time={comment.created_at} />
+                </View>
               </View>
             </View>
-            <Text style={styles.comment}>{message[2]}</Text>
+            <View style={styles.comment}>
+              <Markdown>{comment.body}</Markdown>
+            </View>
           </View>
-        }
-      />
+        } />
     )
   }
 }
