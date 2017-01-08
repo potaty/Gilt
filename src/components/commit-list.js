@@ -59,12 +59,6 @@ const styles = StyleSheet.create({
 })
 
 export default class CommitList extends React.Component {
-  handleClickLink = message => {
-    this.props.navigator.push(Object.assign({}, routes[8], {
-      api: message.url,
-    }))
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -76,9 +70,9 @@ export default class CommitList extends React.Component {
         { !!this.props.dataSource && <ListView dataSource={this.props.dataSource}
             renderRow={ message =>
               <View style={styles.row}>
-                <Image style={styles.head} source={Qingzhen} />
+                <Image style={styles.icon} source={Qingzhen} />
                 <View style={styles.list}>
-                  <Text style={styles.title}>{ message[1] }</Text>
+                  <Text style={styles.title}>{ message[2] }</Text>
                   <View style={styles.timeContainer}>
                     { message[0] && <Text style={styles.time}>
                       Open by {message[0]+ ' '}

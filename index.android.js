@@ -12,6 +12,7 @@ import UserList from './src/pages/user-list'
 import Issue from './src/pages/issue'
 import IssueList from './src/pages/issue-list'
 import Commit from './src/pages/commit'
+import CommitDetail from './src/pages/commit-detail'
 
 class GiltApplication extends React.Component {
   initNavigator = navigator => {
@@ -49,11 +50,13 @@ class GiltApplication extends React.Component {
         return <IssueList route={route} navigator={navigator} />
       case 'COMMIT':
         return <Commit route={route} navigator={navigator} />
+      case 'COMMIT_DETAIL':
+        return <CommitDetail route={route} navigator={navigator} />
     }
   }
   render() {
     return (
-      <Navigator initialRoute={routes[9]} renderScene={this.renderScene}
+      <Navigator initialRoute={routes[10]} renderScene={this.renderScene}
         configureScene={() => Navigator.SceneConfigs.FloatFromBottomAndroid} />
     )
   }
