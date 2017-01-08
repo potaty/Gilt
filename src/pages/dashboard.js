@@ -61,7 +61,7 @@ const emojiMap = {
   'PublicEvent': '🌳 ',
   'CreateEvent': '🎣 ',
   'IssueCommentEvent': '👓 ',
-  'PushEvent': '🛠 ',
+  'PushEvent': '🍥 ',
   'IssuesEvent': '⛅ ',
 }
 
