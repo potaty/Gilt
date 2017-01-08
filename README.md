@@ -18,7 +18,6 @@
 **How to run:**
 
 ```
-emulator -avd Nexus_5_API_23
-react-native run-android
 npm start
+react-native run-android
 ```
