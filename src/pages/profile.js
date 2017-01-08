@@ -103,6 +103,9 @@ const styles = StyleSheet.create({
   },
 })
 
+/*
+ * 个人资料、其他用户资料页面。
+ */
 export default class Profile extends React.Component {
   state = {
     loaded: false,
@@ -111,6 +114,7 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount = async () => {
+    // 用户信息。
     const user = await (
       await http.get(this.props.route.login ? `/users/${this.props.route.login}` : '/user')
     ).json()
@@ -118,7 +122,9 @@ export default class Profile extends React.Component {
       loaded: true,
       user: user,
     })
+    // 用户项目列表。
     const repos = await (await http.get(`/users/${user.login}/repos`)).json()
+    // 基于 stars 排序。
     const sorted = _.sortBy(repos, ['stargazers_count']).reverse()
     this.setState({
       repos: sorted.slice(0, 6),

@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   }
 })
 
+// 提交列表组件。
 export default class CommitList extends React.Component {
   handleShowCommit = sha => {
     this.props.navigator.push(Object.assign({}, routes[10], {

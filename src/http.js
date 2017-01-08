@@ -1,3 +1,6 @@
+/*
+ * HTTP 工具库
+ */
 const http = {
   get: (uri, accept) => fetch(`https://api.github.com${uri}`, {
     method: 'GET',

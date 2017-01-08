@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
 })
 
+// 工单列表。
 export default class IssueList extends React.Component {
   state = {}
 

@@ -1,3 +1,6 @@
+/*
+ * 路由表
+ */
 const routes = [
   { name: 'LOGIN', index: 0 },
   { name: 'DASHBOARD', index: 1 },

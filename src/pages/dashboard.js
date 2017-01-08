@@ -65,11 +65,13 @@ const emojiMap = {
   'IssuesEvent': '⛅ ',
 }
 
+// 动态主页。
 export default class Dashboard extends React.Component {
   state = {}
 
   componentDidMount = async () => {
     const user = await (await http.get('/user')).json()
+    // 主页动态列表。
     const events = (await (
       await http.get(`/users/${user.login}/received_events`)
     ).json()).map(event => {

@@ -14,7 +14,11 @@ import IssueList from './src/pages/issue-list'
 import Commit from './src/pages/commits'
 import CommitDetail from './src/pages/commit'
 
+/*
+ * App 入口文件
+ */
 class GiltApplication extends React.Component {
+  // 监听 Android 后退按钮，触发路由的后退
   initNavigator = navigator => {
     this.navigator = navigator
     BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -25,6 +29,7 @@ class GiltApplication extends React.Component {
       return false
     })
   }
+  // 分发路由
   renderScene = (route, navigator) => {
     if (!this.navigator) {
       this.initNavigator(navigator)
@@ -62,4 +67,5 @@ class GiltApplication extends React.Component {
   }
 }
 
+// 接管 app
 AppRegistry.registerComponent('Gilt', () => GiltApplication)

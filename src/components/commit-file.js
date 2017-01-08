@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   },
 })
 
+// 提交文件渲染。
 export default class CommitFile extends React.Component {
   renderLine = (line, index) => {
     if (line.startsWith('@@')) {

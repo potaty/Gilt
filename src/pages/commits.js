@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
 })
 
+// 项目 commits 列表。
 export default class Commits extends React.Component {
   state = {}
   componentDidMount = async () => {

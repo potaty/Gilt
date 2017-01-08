@@ -10,10 +10,12 @@ const styles = StyleSheet.create({
   },
 })
 
+// README 页面
 export default class Readme extends React.Component {
   state = { readme: '' }
 
   async componentDidMount() {
+    // API 可以获得 HTML 版本，使用 webview 渲染。
     const readme = await (await http.get(`/repos/${this.props.route.repo}/readme`,
       'application/vnd.github.VERSION.html')).text()
     this.setState({

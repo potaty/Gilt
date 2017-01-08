@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
   },
 })
 
+/*
+ * 用户列表组件，用于渲染 followers，following，contributors 等用户列表页面
+ */
 export default class UserList extends React.Component {
   state = {}
   componentDidMount = async () => {

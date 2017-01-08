@@ -7,8 +7,6 @@ import CommentList from '../components/comment-list'
 
 import http from '../http'
 
-global.ACCESS_TOKEN = '09fbdbe418c4d1e338acc4ed6743818af913c234'
-
 const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#263238',
@@ -96,6 +94,7 @@ const styles = StyleSheet.create({
   }
 })
 
+// 工单页面。
 export default class Issue extends React.Component {
   state = {text: ''}
 
@@ -108,9 +107,11 @@ export default class Issue extends React.Component {
   }
 
   handleSubmit = async () => {
+    // 提交评论。
     const comment = await http.post(this.state.issue.comments_url.substr(22), {
       body: this.state.text,
     })
+    // 成功 201.
     if (comment.status === 201) {
       ToastAndroid.show('Commented successfully!', ToastAndroid.SHORT)
       this.refs.comments.update()

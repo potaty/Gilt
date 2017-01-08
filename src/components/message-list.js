@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   }
 })
 
+// 消息列表基本组件。
 export default class MessageList extends React.Component {
   handleClickLink = message => {
     this.props.navigator.push(Object.assign({}, routes[8], {

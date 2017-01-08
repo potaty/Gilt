@@ -53,13 +53,19 @@ const styles = StyleSheet.create({
   },
 })
 
+/*
+ * 项目页面组件
+ */
 export default class Repository extends React.Component {
   state = { readme: '' }
 
   componentDidMount = async () => {
     const repo = this.props.route.repo
+    // Star 信息
     const star = await http.get(`/user/starred/${repo}`)
+    // Watch 信息
     const watch = await (await http.get(`/repos/${repo}/subscription`)).json()
+    // 项目基本信息
     const data = await (await http.get(`/repos/${repo}`)).json()
     const dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
@@ -88,6 +94,7 @@ export default class Repository extends React.Component {
         onClick: this.handleShowContributors,
       }]),
     })
+    // 获得 README HTML 版
     const readme = await (await http.get(`/repos/${repo}/readme`,
       'application/vnd.github.VERSION.html')).text()
     this.setState({

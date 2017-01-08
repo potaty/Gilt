@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
 })
 
+// 评论列表组件。
 export default class CommentList extends React.Component {
   state = {}
 

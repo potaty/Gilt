@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
   },
 })
 
+/*
+ * 通知页面。
+ */
 export default class Notification extends React.Component {
   state = {}
 

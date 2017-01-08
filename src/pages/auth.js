@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   },
 })
 
+// 登录界面。
 export default class Auth extends React.Component {
   handleNavigationStateChange = async (state) => {
     if (state.url.indexOf('?code=') !== -1 && !global.ACCESS_TOKEN_PROCESSED) {
