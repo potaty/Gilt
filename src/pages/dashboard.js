@@ -59,10 +59,10 @@ const emojiMap = {
   'ForkEvent': '📚 ',
   'CreateEvent': '🍀 ',
   'PublicEvent': '🌳 ',
-  'CreateEvent': '',
-  'IssueCommentEvent': '',
-  'PushEvent': '',
-  'IssuesEvent': '',
+  'CreateEvent': '🎣 ',
+  'IssueCommentEvent': '👓 ',
+  'PushEvent': '🛠 ',
+  'IssuesEvent': '⛅ ',
 }
 
 export default class Dashboard extends React.Component {
