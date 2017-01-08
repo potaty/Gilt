@@ -8,6 +8,7 @@ const routes = [
   { name: 'USER_LIST', index: 6 },
   { name: 'ISSUE_LIST', index: 7 },
   { name: 'ISSUE', index: 8 },
+  { name: 'COMMIT', index: 9},
 ]
 
 export default routes
