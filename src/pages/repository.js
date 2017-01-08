@@ -75,7 +75,7 @@ export default class Repository extends React.Component {
         text: `⌚️    Watchers (${data.subscribers_count})`,
         onClick: this.handleShowWatchers,
       }, {
-        text: `⭐    Commits`,
+        text: `🍥    Commits`,
         onClick: this.handleShowCommits,
       }, {
         text: `🍴    Issues`,
