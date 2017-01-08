@@ -75,6 +75,9 @@ export default class Repository extends React.Component {
         text: `⌚️    Watchers (${data.subscribers_count})`,
         onClick: this.handleShowWatchers,
       }, {
+        text: `⭐    Commits`,
+        onClick: this.handleShowCommits,
+      }, {
         text: `🍴    Issues`,
         onClick: this.handleShowIssues,
       }, {
@@ -95,6 +98,12 @@ export default class Repository extends React.Component {
   handleShowReadme = () => {
     this.props.navigator.push(Object.assign({}, routes[3], {
       repo: this.props.route.repo
+    }))
+  }
+
+  handleShowCommits = () => {
+    this.props.navigator.push(Object.assign({}, routes[9], {
+      api: `/repos/${this.props.route.repo}/commits`,
     }))
   }
 

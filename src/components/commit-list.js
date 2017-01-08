@@ -9,7 +9,6 @@ import issueIcon from '../images/warning.png'
 import mergedPullRequestIcon from '../images/merge.png'
 import closedPullRequestIcon from '../images/closed-pull-request.png'
 import pullRequestIcon from '../images/pull-request.png'
-import Qingzhen from '../images/qingzhen.png'
 
 const styles = StyleSheet.create({
   repo: {
@@ -42,10 +41,11 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
   },
-  icon: {
-    margin: 15,
-    width: 24,
-    height: 24,
+  head: {
+    margin: 10,
+    borderRadius: 15,
+    width: 30,
+    height: 30,
   },
   row: {
     flexDirection: 'row',
@@ -59,35 +59,37 @@ const styles = StyleSheet.create({
 })
 
 export default class CommitList extends React.Component {
+  handleShowCommit = sha => {
+    this.props.navigator.push(Object.assign({}, routes[10], {
+      api: `${this.props.api}/${sha}`,
+    }))
+  }
   render() {
     return (
       <View style={styles.container}>
-        { !!this.props.title &&
-          <Text style={styles.repoTitle}>
-            {this.props.title}
-          </Text>
-        }
-        { !!this.props.dataSource && <ListView dataSource={this.props.dataSource}
-            renderRow={ message =>
-              <View style={styles.row}>
-                <Image style={styles.icon} source={Qingzhen} />
-                <View style={styles.list}>
-                  <Text style={styles.title}>{ message[2] }</Text>
-                  <View style={styles.timeContainer}>
-                    { message[0] && <Text style={styles.time}>
-                      Open by {message[0]+ ' '}
-                      </Text>
-                    }
-                    <TimeAgo style={styles.time} time={message[1] || message[1]} />
-                  </View>
+        <ListView dataSource={this.props.dataSource}
+          renderRow={commit =>
+            <View style={styles.row}>
+              <Image style={styles.head} source={{ uri: commit.author.avatar_url }} />
+              <View style={styles.list}>
+                <TouchableHighlight underlayColor="#e0e0e0"
+                  onPress={this.handleShowCommit.bind(this, commit.sha)}>
+                  <Text style={styles.title}>{ commit.commit.message.split("\n")[0] }</Text>
+                </TouchableHighlight>
+                <View style={styles.timeContainer}>
+                  <Text style={styles.time}>
+                    { commit.committer ? commit.committer.login : commit.commit.author } committed{' '}
+                  </Text>
+                  <TimeAgo style={styles.time} time={commit.commit.committer.date} />
                 </View>
               </View>
-            }
-            renderSeparator={(sectionId, rowId) => (
-              <View key={rowId} style={styles.separator} />
-            )}
-          />
-        }
-      </View>)
+            </View>
+          }
+          renderSeparator={(sectionId, rowId) => (
+            <View key={rowId} style={styles.separator} />
+          )}
+        />
+      </View>
+    )
   }
 }

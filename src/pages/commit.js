@@ -1,10 +1,10 @@
 import React from 'react'
-import { Image, StyleSheet, Text, ToolbarAndroid, View, ListView } from 'react-native'
+import { Image, StyleSheet, ScrollView, Text, ToolbarAndroid, View, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
 
-import CommitList from '../components/commit-list'
+import CommitFile from '../components/commit-file'
 
-import Qingzhen from '../images/qingzhen.png'
+import http from '../http'
 
 const styles = StyleSheet.create({
   toolbar: {
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
+    lineHeight: 18,
   },
   head: {
     height: 40,
@@ -50,30 +51,66 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 15,
   },
+  title: {
+    backgroundColor: '#d1e2eb',
+    padding: 10,
+    color: '#213f4d',
+    fontWeight: 'bold',
+  },
+  authorContainer: {
+    flexDirection: 'row',
+    margin: 10,
+  },
+  head: {
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+  },
+  author: {
+    fontWeight: 'bold',
+    marginHorizontal: 5,
+  },
+  timeContainer: {
+    marginHorizontal: 5,
+    flexDirection: 'row',
+  },
+  line: {
+    flexDirection: 'column',
+  }
 })
 
-export default class Dashboard extends React.Component {
+export default class CommitDetail extends React.Component {
   state = {}
   componentDidMount = async () => {
-    const dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    this.setState({
-      dataSource: dataSource.cloneWithRows([['potaty', 'two hours ago', 'please fix this chibug please'],
-                                          ['obama', 'one day ago', 'please fix this chibug please'],
-                                          ['trump', 'two days ago', 'please fix this chibug please']])
-    })
+    const commit = await (
+      await http.get(this.props.route.api)
+    ).json()
+    this.setState({ commit })
+    console.log(commit.files)
   }
   render() {
     return (
       <View>
-        <ToolbarAndroid style={styles.toolbar} title="potaty/Gilt" titleColor="#ffffff" />
-        <Text style={styles.repoTitle}>
-          {'Jan 08, 2017'}
-        </Text>
-        <CommitList dataSource={this.state.dataSource}/>
-        <Text style={styles.repoTitle}>
-          {'Jan 08, 2017'}
-        </Text>
-        <CommitList dataSource={this.state.dataSource}/>
+        <ToolbarAndroid style={styles.toolbar}
+          title={this.state.commit ? this.state.commit.commit.message : "Commit"} titleColor="#ffffff" />
+        { !!this.state.commit && <ScrollView>
+          <Text style={styles.title}>{ this.state.commit.commit.message }</Text>
+          <View style={styles.authorContainer}>
+            <Image style={styles.head} source={{ uri: this.state.commit.committer.avatar_url }}/>
+            <View style={styles.line}>
+              <Text style={styles.author}>
+                { this.state.commit.committer ? this.state.commit.committer.login : this.state.commit.commit.author }
+              </Text>
+              <View style={styles.timeContainer}>
+                <Text style={styles.time}>Committed </Text>
+                <TimeAgo style={styles.time} time={this.state.commit.commit.committer.date} />
+              </View>
+            </View>
+          </View>
+          { this.state.commit.files.map(file => (
+            <CommitFile key={file.filename} file={file} />
+          )) }
+        </ScrollView> }
       </View>
     )
   }

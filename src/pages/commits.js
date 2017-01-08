@@ -2,9 +2,9 @@ import React from 'react'
 import { Image, StyleSheet, Text, ToolbarAndroid, View, ListView } from 'react-native'
 import TimeAgo from 'react-native-timeago'
 
-import CommitFileList from '../components/commit-file-list'
+import CommitList from '../components/commit-list'
 
-import Qingzhen from '../images/qingzhen.png'
+import http from '../http'
 
 const styles = StyleSheet.create({
   toolbar: {
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 12,
-    lineHeight: 18,
   },
   head: {
     height: 40,
@@ -51,40 +50,28 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 15,
   },
-  title: {
-    backgroundColor: '#d1e2eb',
-    padding: 10,
-    color: '#213f4d',
-    fontWeight: 'bold',
-  },
-  authorContainer: {
-    flexDirection: 'row',
-    margin: 10,
-  },
-  head: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-  },
-  author: {
-    fontWeight: 'bold',
-    marginHorizontal: 5,
-  },
 })
 
-export default class CommitDetail extends React.Component {
+export default class Commits extends React.Component {
   state = {}
+  componentDidMount = async () => {
+    const commits = await (
+      await http.get(this.props.route.api)
+    ).json()
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    })
+    this.setState({
+      dataSource: dataSource.cloneWithRows(commits)
+    })
+  }
   render() {
     return (
       <View>
-        <ToolbarAndroid style={styles.toolbar} title="Issue Detail" titleColor="#ffffff" />
-        <Text style={styles.title}>use emoji</Text>
-        <View style={styles.authorContainer}>
-          <Image style={styles.head}source={Qingzhen}/>
-          <Text style={styles.author}>potaty</Text>
-          <Text style={styles.time}>commit about two hours ago</Text>
-        </View>
-        <CommitFileList />
+        <ToolbarAndroid style={styles.toolbar} title="Commits" titleColor="#ffffff" />
+        {!!this.state.dataSource &&
+          <CommitList dataSource={this.state.dataSource} api={this.props.route.api}
+          navigator={this.props.navigator} />}
       </View>
     )
   }
