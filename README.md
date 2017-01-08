@@ -19,6 +19,6 @@
 
 ```
 emulator -avd Nexus_5_API_23
-react-native run-android```
+react-native run-android
 npm start
 ```
